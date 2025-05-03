@@ -49,3 +49,23 @@ yarn-error.log*
 .env
 .vscode
 .idea
+
+# 构建输出
+.next/
+out/
+
+# 依赖
+node_modules/
+
+# 日志
+*.log
+
+# 本地环境文件
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# 杂项
+.DS_Store
+
