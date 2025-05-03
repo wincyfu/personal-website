@@ -1,0 +1,19 @@
+# 忽略备份和日志文件
+/backups/
+/logs/
+/backup/
+/_next/
+/out/
+/.next/
+/node_modules/
+.git/
+*.log
+# 忽略大文件
+*.tar.gz
+*.zip
+*.rar
+*.7z
+performance_optimizations.patch
+# 忽略临时目录
+/temp_convert/
+/tmp*/
