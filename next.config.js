@@ -5,7 +5,8 @@ const nextConfig = {
   // 针对Vercel部署优化配置
   // 移除output: 'export'以便Vercel能自动处理服务端渲染和静态生成
   // output: 'export',
-  basePath: process.env.NODE_ENV === 'production' ? '/stations' : '',
+  // 移除basePath设置，避免路径不匹配导致404
+  // basePath: process.env.NODE_ENV === 'production' ? '/stations' : '',
   // 移除distDir配置，让Vercel使用默认的.next目录
   // distDir: 'out',
   images: {
