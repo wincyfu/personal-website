@@ -32,4 +32,10 @@
 # 排除不必要的文件和目录
 [functions]
   included_files = ["public/**/*"]
-  excluded_files = ["**/backup/**", "**/backups/**", "**/logs/**", "**/*.tar.gz", "**/*.zip", "**/*.rar", "**/*.7z"] 
+
+[build.environment.NETLIFY_NEXT_PLUGIN_SKIP]
+  command = "true"
+
+# 使用.gitignore而不是函数配置来排除文件
+[build.processing.ignore]
+  files = ["**/backup/**", "**/backups/**", "**/logs/**", "**/*.tar.gz", "**/*.zip", "**/*.rar", "**/*.7z"] 
