@@ -5,6 +5,7 @@
 [build.environment]
   NODE_VERSION = "18"
   NODE_OPTIONS = "--max-old-space-size=4096"
+  NETLIFY_NEXT_PLUGIN_SKIP = "true"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
@@ -32,9 +33,6 @@
 # 排除不必要的文件和目录
 [functions]
   included_files = ["public/**/*"]
-
-[build.environment.NETLIFY_NEXT_PLUGIN_SKIP]
-  command = "true"
 
 # 使用.gitignore而不是函数配置来排除文件
 [build.processing.ignore]
