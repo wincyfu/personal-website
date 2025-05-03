@@ -1,0 +1,35 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "18"
+  NODE_OPTIONS = "--max-old-space-size=4096"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+[build.processing]
+  skip_processing = false
+
+[build.processing.css]
+  bundle = true
+  minify = true
+
+[build.processing.js]
+  bundle = true
+  minify = true
+
+[build.processing.images]
+  compress = true
+
+# 忽略大文件
+[[plugins]]
+  package = "netlify-plugin-cache"
+  [plugins.inputs]
+    paths = [".next/cache"]
+
+# 排除不必要的文件和目录
+[functions]
+  included_files = ["public/**/*"]
+  excluded_files = ["**/backup/**", "**/backups/**", "**/logs/**", "**/*.tar.gz", "**/*.zip", "**/*.rar", "**/*.7z"] 
