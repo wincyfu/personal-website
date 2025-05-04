@@ -4,19 +4,22 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { usePathname } from 'next/navigation';
+import { getTranslatedText } from '@/utils/translations';
 
 const Nav = () => {
   const [scrolled, setScrolled] = useState(false);
   const { isDarkTheme, toggleTheme } = useTheme();
+  const { isEnglish, toggleLanguage } = useLanguage();
   const pathname = usePathname();
   
   const navItems = [
-    { name: '首页', href: '/' },
-    { name: '关于我', href: '/about' },
-    { name: '我的产品', href: '/products' },
-    { name: '文章教程', href: '/tutorials' },
-    { name: 'AI知识库', href: '/knowledge' }
+    { name: getTranslatedText('nav.home', isEnglish), href: '/' },
+    { name: getTranslatedText('nav.about', isEnglish), href: '/about' },
+    { name: getTranslatedText('nav.products', isEnglish), href: '/products' },
+    { name: getTranslatedText('nav.tutorials', isEnglish), href: '/tutorials' },
+    { name: getTranslatedText('nav.knowledge', isEnglish), href: '/knowledge' }
   ];
 
   // 检测滚动状态，添加背景模糊效果
@@ -82,10 +85,19 @@ const Nav = () => {
             })}
           </ul>
           
+          {/* Language Toggle Button */}
+          <button 
+            onClick={toggleLanguage} 
+            aria-label={getTranslatedText('nav.languageSwitch', isEnglish)}
+            className="p-2 rounded-full transition-all duration-300 hover:scale-110 bg-white text-dark ml-4"
+          >
+            {isEnglish ? '中' : 'EN'}
+          </button>
+          
           {/* Theme Toggle Button */}
           <button 
             onClick={toggleTheme} 
-            aria-label="切换主题"
+            aria-label={getTranslatedText('nav.themeSwitch', isEnglish)}
             className="p-2 rounded-full transition-all duration-300 hover:scale-110 bg-white text-dark ml-4"
           >
             {isDarkTheme ? '☀️' : '🌙'}

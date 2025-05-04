@@ -2,11 +2,14 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 import Image from 'next/image';
 import Link from 'next/link';
+import TranslatedText from '@/components/TranslatedText';
 
 interface SocialPlatform {
   name: string;
+  nameEn?: string;
   icon: string;
   url: string;
   qrcode?: string;
@@ -15,6 +18,7 @@ interface SocialPlatform {
 
 const Contact = () => {
   const { isDarkTheme } = useTheme();
+  const { isEnglish } = useLanguage();
   const [activeQRCode, setActiveQRCode] = useState<string | null>(null);
   const qrCodeRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
@@ -166,6 +170,7 @@ const Contact = () => {
   const platforms: SocialPlatform[] = [
     { 
       name: '微信', 
+      nameEn: 'WeChat',
       icon: '/images/wechat-icon.png', 
       url: 'https://github.com/xianerme',
       qrcode: '/images/wechat-qrcode.png',
@@ -173,6 +178,7 @@ const Contact = () => {
     },
     { 
       name: '微信公众号', 
+      nameEn: 'WeChat Official Account',
       icon: '/images/wechatgongzhonghao-icon.png', 
       url: 'https://www.xiaohongshu.com/user/profile/54e5db132e1d937e9a6902f7',
       qrcode: '/images/wechatgongzhonghao-qrcode.png',
@@ -180,6 +186,7 @@ const Contact = () => {
     },
     { 
       name: '小红书', 
+      nameEn: 'RedBook',
       icon: '/images/xiaohongshu-icon.png', 
       url: 'https://www.xiaohongshu.com/user/profile/54e5db132e1d937e9a6902f7',
       qrcode: '/images/zhihu-qr.png',
@@ -187,12 +194,14 @@ const Contact = () => {
     },
     { 
       name: '知乎', 
+      nameEn: 'Zhihu',
       icon: '/images/zhihu-icon.png',
       url: 'https://www.zhihu.com/people/fu-da-xian',
       amount: '@WincyFu'
     },
     { 
       name: '微博', 
+      nameEn: 'Weibo',
       icon: '/images/weibo.png', 
       url: 'https://m.weibo.cn/profile/1783924480',
       qrcode: '/images/wechat-mp-qr.png',
@@ -200,6 +209,7 @@ const Contact = () => {
     },
     { 
       name: 'CSDN', 
+      nameEn: 'CSDN',
       icon: '/images/csdn.png', 
       url: 'https://blog.csdn.net/aquarius5211?spm=1000.2115.3001.5343',
       qrcode: '/images/wechat-qr.png',
@@ -207,6 +217,7 @@ const Contact = () => {
     },
     { 
       name: 'YouTube', 
+      nameEn: 'YouTube',
       icon: '/images/youtube.png', 
       url: 'https://www.youtube.com/@wincyfu7083',
       qrcode: '/images/csdn-qr.png',
@@ -236,14 +247,17 @@ const Contact = () => {
           className={`text-[40px] font-bold font-['PingFang_SC'] mb-[10px] ${isVisible ? '' : 'opacity-0'} ${isDarkTheme ? 'text-white' : 'text-dark'}`}
           style={{ opacity: isVisible ? 1 : 0 }}
         >
-          与我联系
+          {isEnglish ? 'Contact Me' : '联系我'}
         </h2>
         <p 
           ref={elementsRef.subtitle}
           className={`text-[18px] font-['PingFang_SC'] mb-[70px] ${isVisible ? '' : 'opacity-0'} ${isDarkTheme ? 'text-white/50' : 'text-dark/50'}`}
           style={{ opacity: isVisible ? 1 : 0 }}
         >
-          对AI或AIGC相关技术有任何疑问，欢迎随时联系交流与探讨
+          {isEnglish 
+            ? 'If you have any questions about AI or AIGC related technologies, feel free to contact me for discussion' 
+            : '对AI或AIGC相关技术有任何疑问，欢迎随时联系交流与探讨'
+          }
         </p>
         
         <div 
@@ -280,7 +294,7 @@ const Contact = () => {
                     </div>
                     <div className="contact-text-container">
                       <h3 className="font-medium text-[1.25rem]">
-                        {platform.name}
+                        {isEnglish && platform.nameEn ? platform.nameEn : platform.name}
                       </h3>
                       <p className="font-medium">
                         {platform.amount}
@@ -306,7 +320,7 @@ const Contact = () => {
                     </div>
                     <div className="contact-text-container">
                       <h3 className="font-medium text-[1.25rem]">
-                        {platform.name}
+                        {isEnglish && platform.nameEn ? platform.nameEn : platform.name}
                       </h3>
                       <p className="font-medium">
                         {platform.amount}
@@ -386,7 +400,7 @@ const Contact = () => {
                     </div>
                     <div className="contact-text-container">
                       <h3 className="font-medium text-[1.25rem]">
-                        {platform.name}
+                        {isEnglish && platform.nameEn ? platform.nameEn : platform.name}
                       </h3>
                       <p className="font-medium">
                         {platform.amount}

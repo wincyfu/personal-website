@@ -4,6 +4,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useLanguage } from '@/contexts/LanguageContext';
+import TranslatedText from '@/components/TranslatedText';
 
 interface StatProps {
   value: string;
@@ -55,6 +57,7 @@ const SocialPost = ({ title, excerpt, imageSrc, likes, views, link }: SocialPost
 
 const Achievements = () => {
   const { isDarkTheme } = useTheme();
+  const { isEnglish } = useLanguage();
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const elementsRef = {
@@ -105,33 +108,33 @@ const Achievements = () => {
   }, [isDarkTheme]);
   
   const stats = [
-    { value: '80+', label: 'AI文章/图文教程' },
-    { value: '100+', label: 'AIGC周刊' },
-    { value: '10k+', label: '全网关注粉丝' },
-    { value: '10+', label: '合作品牌' },
+    { value: '80+', label: isEnglish ? 'AI Articles/Tutorials' : 'AI文章/图文教程' },
+    { value: '100+', label: isEnglish ? 'AIGC Weekly' : 'AIGC周刊' },
+    { value: '10k+', label: isEnglish ? 'Total Followers' : '全网关注粉丝' },
+    { value: '20+', label: isEnglish ? 'Partner Brands' : '合作品牌' },
   ];
 
   // 这里会替换为小红书内容，按照点赞量和阅读量排序
   const socialPosts = [
     {
-      title: '7个让你效率翻倍的AI工具推荐',
-      excerpt: '这些AI工具可以大幅提升你的工作效率，特别是第5个几乎改变了我的整个工作流程...',
+      title: isEnglish ? '7 AI Tools to Double Your Efficiency' : '7个让你效率翻倍的AI工具推荐',
+      excerpt: isEnglish ? 'These AI tools can greatly improve your work efficiency, especially the 5th one which has almost changed my entire workflow...' : '这些AI工具可以大幅提升你的工作效率，特别是第5个几乎改变了我的整个工作流程...',
       imageSrc: '/images/post-1.jpg',
       likes: 1250,
       views: 15000,
       link: 'https://www.xiaohongshu.com/user/profile/54e5db132e1d937e9a6902f7',
     },
     {
-      title: 'Midjourney提示词模板分享：5分钟生成专业级插画',
-      excerpt: '分享我总结的一套Midjourney提示词模板，按照这个公式可以快速生成高质量插画...',
+      title: isEnglish ? 'Midjourney Prompt Templates: Generate Professional Illustrations in 5 Minutes' : 'Midjourney提示词模板分享：5分钟生成专业级插画',
+      excerpt: isEnglish ? 'Sharing my summarized set of Midjourney prompt templates. Following this formula, you can quickly generate high-quality illustrations...' : '分享我总结的一套Midjourney提示词模板，按照这个公式可以快速生成高质量插画...',
       imageSrc: '/images/post-2.jpg',
       likes: 980,
       views: 12300,
       link: 'https://www.xiaohongshu.com/user/profile/54e5db132e1d937e9a6902f7',
     },
     {
-      title: '设计师如何用AI辅助日常工作？这是我的完整工作流',
-      excerpt: '作为设计师，这是我如何将AI融入日常工作流程，大大提高了创意和执行效率...',
+      title: isEnglish ? 'How Designers Can Use AI in Daily Work: My Complete Workflow' : '设计师如何用AI辅助日常工作？这是我的完整工作流',
+      excerpt: isEnglish ? 'As a designer, this is how I integrate AI into my daily workflow, greatly improving creativity and execution efficiency...' : '作为设计师，这是我如何将AI融入日常工作流程，大大提高了创意和执行效率...',
       imageSrc: '/images/post-3.jpg',
       likes: 850,
       views: 10500,
@@ -150,14 +153,14 @@ const Achievements = () => {
           className={`text-[40px] font-bold font-['PingFang_SC'] mb-[10px] ${isVisible ? '' : 'opacity-0'} ${isDarkTheme ? 'text-white' : 'text-dark'}`}
           style={{ opacity: isVisible ? 1 : 0 }}
         >
-          个人成就
+          <TranslatedText textKey="achievements.title" />
         </h2>
         <p 
           ref={elementsRef.subtitle}
           className={`text-[18px] font-['PingFang_SC'] mb-16 ${isVisible ? '' : 'opacity-0'} ${isDarkTheme ? 'text-white/50' : 'text-dark/50'}`}
           style={{ opacity: isVisible ? 1 : 0 }}
         >
-          记录AI领域持续探索与实践的里程碑
+          <TranslatedText textKey="achievements.subtitle" />
         </p>
         
         <div 
@@ -181,7 +184,7 @@ const Achievements = () => {
             <div className="relative w-full">
               <Image 
                 src={isDarkTheme ? `/images/achievements-dark.png?v=${Date.now()}` : `/images/achievements-light.png?v=${Date.now()}`} 
-                alt="个人成就图片" 
+                alt={isEnglish ? "Achievements Image" : "个人成就图片"} 
                 width={1200}
                 height={600}
                 sizes="(max-width: 768px) 90vw, (max-width: 1200px) 90vw, 1200px"
