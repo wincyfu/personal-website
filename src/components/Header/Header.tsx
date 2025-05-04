@@ -3,6 +3,9 @@
 import React, { useEffect, useRef, useState, lazy, Suspense } from 'react';
 import Image from 'next/image';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { getTranslatedText } from '@/utils/translations';
+import TranslatedText from '@/components/TranslatedText';
 
 // 懒加载组件
 const AnimatedHello = lazy(() => import('./AnimatedHello'));
@@ -17,6 +20,7 @@ const LoadingPlaceholder = () => (
 
 const Header = () => {
   const { isDarkTheme } = useTheme();
+  const { isEnglish } = useLanguage();
   const sectionRef = useRef<HTMLElement>(null);
   const [showQrCode, setShowQrCode] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
@@ -148,47 +152,60 @@ const Header = () => {
               lineHeight: 1
             }}
           >
-            I&apos;m WincyFu <span className="waving-hand">👋</span>
+            <TranslatedText textKey="header.greeting" />
+            <span className="waving-hand">👋</span>
           </div>
           
           {/* 添加联系我按钮，鼠标悬停显示微信二维码 - 使用onClick事件作为备选方案 */}
-          <div className="relative" style={{ marginTop: '75px', zIndex: 9999 }}>
-            <button 
-              className="flex items-center justify-center hover:opacity-90 transition-opacity"
-              style={{
-                backgroundColor: '#22C45E',
-                width: '200px',
-                height: '60px',
-                borderRadius: '100px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                cursor: 'pointer',
-                position: 'relative',
-                zIndex: 1
-              }}
+          <div
+            className="flex flex-col items-center mt-10"
+            style={{ perspective: '2000px' }}
+          >
+            <div 
+              className="perspective-hover bg-gradient-to-r from-emerald-600 to-teal-500 text-white text-opacity-90 rounded-lg cursor-pointer relative overflow-hidden transition-all duration-500"
               onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
               onClick={toggleQrCode}
+              style={{ 
+                background: 'linear-gradient(to right, #22c45e, #22c45e)',
+                boxShadow: 'none',
+                borderRadius: '50px',
+                padding: '15px 30px',
+                fontWeight: 'bold',
+                fontSize: '18px',
+                letterSpacing: '0.5px',
+                transform: 'translateZ(0)',
+                transition: 'all 0.3s ease',
+              }}
+              onMouseMove={(e) => {
+                const btn = e.currentTarget;
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const rotateY = ((x - rect.width / 2) / rect.width) * 10;
+                const rotateX = -((y - rect.height / 2) / rect.height) * 10;
+                
+                btn.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
+              }}
+              onMouseLeave={(e) => {
+                const btn = e.currentTarget;
+                btn.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateZ(0)';
+                // 同时处理二维码的隐藏逻辑
+                if (timeoutRef.current) {
+                  clearTimeout(timeoutRef.current);
+                  timeoutRef.current = null;
+                }
+                timeoutRef.current = setTimeout(() => {
+                  setShowQrCode(false);
+                }, 300);
+              }}
             >
-              <span 
-                className="font-medium"
-                style={{
-                  color: '#fff',
-                  fontSize: '24px',
-                  fontFamily: 'OppoSans, sans-serif',
-                  textAlign: 'center',
-                  display: 'inline-block'
-                }}
-              >
-                联系我
-              </span>
-            </button>
+              <TranslatedText textKey="header.contactBtn" />
+            </div>
           </div>
         </div>
       </div>
-      
-      {/* 微信二维码弹出框 - 移至最外层以避免嵌套问题 */}
+    
       {showQrCode && (
         <div 
           onMouseEnter={handleMouseEnter}
@@ -232,7 +249,7 @@ const Header = () => {
             loading="lazy"
           />
           <p style={{ marginTop: '12px', fontSize: '14px', color: '#333' }}>
-            可扫码添加微信
+            <TranslatedText textKey="header.qrCodeText" />
           </p>
         </div>
       )}

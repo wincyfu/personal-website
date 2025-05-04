@@ -4,12 +4,15 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 import useWechatArticles from '@/hooks/useWechatArticles';
 import Nav from '@/components/Nav/Nav';
 import Footer from '@/components/Footer/Footer';
+import TranslatedText from '@/components/TranslatedText';
 
 export default function TutorialsPage() {
   const { isDarkTheme } = useTheme();
+  const { isEnglish } = useLanguage();
   const { articles, loading, error } = useWechatArticles();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -35,10 +38,10 @@ export default function TutorialsPage() {
       <div className="w-full max-w-[1200px] mx-auto px-4 md:px-8 lg:px-12 mt-16">
         <div className="text-center mb-12 pt-16">
           <h1 className={`text-3xl md:text-4xl font-bold mb-4 ${isDarkTheme ? 'text-white' : 'text-dark'}`}>
-            文章教程
+            <TranslatedText textKey="tutorials.title" />
           </h1>
           <p className={`text-lg ${isDarkTheme ? 'text-white/60' : 'text-gray-600'}`}>
-            AIGC落地实践应用技能与案例，助你高效入门与进阶
+            <TranslatedText textKey="tutorials.subtitle" />
           </p>
         </div>
         
@@ -48,7 +51,7 @@ export default function TutorialsPage() {
             <div className="flex-1">
               <input
                 type="text"
-                placeholder="搜索文章..."
+                placeholder={isEnglish ? "Search articles..." : "搜索文章..."}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className={`w-full px-4 py-3 rounded-lg ${
@@ -68,7 +71,7 @@ export default function TutorialsPage() {
                     : 'bg-white border-gray-200 text-gray-800'
                 } border outline-none focus:ring-2 focus:ring-primary`}
               >
-                <option value="">所有分类</option>
+                <option value="">{isEnglish ? "All Categories" : "所有分类"}</option>
                 {categories.map(category => (
                   <option key={category} value={category}>{category}</option>
                 ))}
@@ -134,7 +137,7 @@ export default function TutorialsPage() {
                     {article.excerpt}
                   </p>
                   <div className="mt-4 text-primary text-sm font-medium">
-                    阅读全文 →
+                    {isEnglish ? "Read More →" : "阅读全文 →"}
                   </div>
                 </div>
               </a>
@@ -142,7 +145,7 @@ export default function TutorialsPage() {
           </div>
         ) : (
           <div className={`text-center p-12 ${isDarkTheme ? 'text-white/60' : 'text-gray-600'}`}>
-            没有找到符合条件的文章
+            {isEnglish ? "No articles found matching your criteria" : "没有找到符合条件的文章"}
           </div>
         )}
         
@@ -158,7 +161,7 @@ export default function TutorialsPage() {
                 : 'bg-[#22c45e] text-white hover:bg-[#1eb554]'
             }`}
           >
-            查看更多教程
+            {isEnglish ? "View More Tutorials" : "查看更多教程"}
           </a>
         </div>
       </div>

@@ -2,20 +2,23 @@
 
 import React, { useRef, useEffect, useState } from 'react';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 import Link from 'next/link';
 import SpotlightCard from '../UI/SpotlightCard';
 import FallingText from '../FallingText';
+import TranslatedText from '@/components/TranslatedText';
 
 interface AITool {
   title: string;
   description: string;
   link: string;
-  region: '国内' | '国外'; 
-  type: '对话' | '绘画';
+  region: string; 
+  type: string;
 }
 
 export default function AIRecommendations() {
   const { isDarkTheme } = useTheme();
+  const { isEnglish } = useLanguage();
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(true);
   const elementsRef = {
@@ -67,45 +70,57 @@ export default function AIRecommendations() {
   const aiTools: AITool[] = [
     {
       title: 'Claude',
-      description: 'Anthropic公司开发的AI助手，强调安全性和有用性，可进行自然对话',
+      description: isEnglish 
+        ? 'AI assistant developed by Anthropic, emphasizing safety and usefulness, capable of natural conversation'
+        : 'Anthropic公司开发的AI助手，强调安全性和有用性，可进行自然对话',
       link: 'https://claude.ai',
-      region: '国外',
-      type: '对话'
+      region: isEnglish ? 'International' : '国外',
+      type: isEnglish ? 'Conversation' : '对话'
     },
     {
       title: 'ChatGPT',
-      description: '由OpenAI开发的强大语言模型，可进行对话、写作、编程等多种任务',
+      description: isEnglish 
+        ? 'Powerful language model developed by OpenAI, capable of conversation, writing, programming, and various tasks'
+        : '由OpenAI开发的强大语言模型，可进行对话、写作、编程等多种任务',
       link: 'https://chat.openai.com',
-      region: '国外',
-      type: '对话'
+      region: isEnglish ? 'International' : '国外',
+      type: isEnglish ? 'Conversation' : '对话'
     },
     {
       title: 'Gemini',
-      description: 'Google开发的多模态AI模型，可理解和生成文本、图像等多种内容',
+      description: isEnglish 
+        ? 'Multimodal AI model developed by Google, capable of understanding and generating text, images, and various content'
+        : 'Google开发的多模态AI模型，可理解和生成文本、图像等多种内容',
       link: 'https://gemini.google.com',
-      region: '国外',
-      type: '对话'
+      region: isEnglish ? 'International' : '国外',
+      type: isEnglish ? 'Conversation' : '对话'
     },
     {
       title: 'Midjourney',
-      description: '高质量AI图像生成工具，可通过文字描述创建艺术品和视觉内容',
+      description: isEnglish 
+        ? 'High-quality AI image generation tool, creating artwork and visual content through text descriptions'
+        : '高质量AI图像生成工具，可通过文字描述创建艺术品和视觉内容',
       link: 'https://www.midjourney.com',
-      region: '国外',
-      type: '绘画'
+      region: isEnglish ? 'International' : '国外',
+      type: isEnglish ? 'Image' : '绘画'
     },
     {
       title: 'WHEE',
-      description: '无限创意的AI工具，帮助用户轻松生成高质量内容和设计作品',
+      description: isEnglish 
+        ? 'Unlimited creativity AI tool, helping users easily generate high-quality content and design works'
+        : '无限创意的AI工具，帮助用户轻松生成高质量内容和设计作品',
       link: 'https://whee.com',
-      region: '国内',
-      type: '绘画'
+      region: isEnglish ? 'China' : '国内',
+      type: isEnglish ? 'Image' : '绘画'
     },
     {
-      title: '堆友',
-      description: '专注于开发者社区的AI工具平台，提供代码辅助和技术解决方案',
+      title: isEnglish ? 'Dui' : '堆友',
+      description: isEnglish 
+        ? 'AI tool platform focused on developer community, providing code assistance and technical solutions'
+        : '专注于开发者社区的AI工具平台，提供代码辅助和技术解决方案',
       link: 'https://dui.com',
-      region: '国内',
-      type: '绘画'
+      region: isEnglish ? 'China' : '国内',
+      type: isEnglish ? 'Image' : '绘画'
     }
   ];
 
@@ -121,7 +136,7 @@ export default function AIRecommendations() {
           className={`text-[40px] font-bold font-['PingFang_SC'] mb-[10px] ${isVisible ? '' : 'opacity-0'} ${isDarkTheme ? 'text-white' : 'text-dark'}`}
           style={{ opacity: isVisible ? 1 : 0 }}
         >
-          AI产品推荐
+          {isEnglish ? 'AI Product Recommendations' : 'AI产品推荐'}
         </h2>
         
         <p
@@ -129,7 +144,10 @@ export default function AIRecommendations() {
           className={`text-[18px] font-['PingFang_SC'] mb-16 ${isVisible ? '' : 'opacity-0'} ${isDarkTheme ? 'text-white/50' : 'text-dark/50'}`}
           style={{ opacity: isVisible ? 1 : 0 }}
         >
-          精选高效AI工具，助你轻松提升工作效率与创造力
+          {isEnglish 
+            ? 'Selected efficient AI tools to help you effortlessly improve work efficiency and creativity'
+            : '精选高效AI工具，助你轻松提升工作效率与创造力'
+          }
         </p>
 
         <div 
@@ -163,7 +181,7 @@ export default function AIRecommendations() {
                   {tool.description}
                 </p>
                 <span className="mt-auto text-left text-sm font-medium text-[#1E9E44]">
-                  立即体验 →
+                  {isEnglish ? 'Try Now →' : '立即体验 →'}
                 </span>
               </div>
             </Link>

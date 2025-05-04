@@ -3,11 +3,14 @@
 import React, { useRef, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 import Nav from '@/components/Nav/Nav';
 import Footer from '@/components/Footer/Footer';
+import TranslatedText from '@/components/TranslatedText';
 
 export default function About() {
   const { isDarkTheme } = useTheme();
+  const { isEnglish } = useLanguage();
   const sectionRef = useRef<HTMLElement>(null);
   const [contentVisible, setContentVisible] = useState(false);
   const elementsRef = {
@@ -73,19 +76,48 @@ export default function About() {
                 </div>
                 <div className="lg:w-2/3">
                   <div className="text-lg mb-6">
-                    <span className="font-bold text-primary text-xl mb-4 block">💻  设计领域深耕者</span>
+                    <span className="font-bold text-primary text-xl mb-4 block">
+                      <TranslatedText textKey="about.designerTitle" />
+                    </span>
                     <ul className="list-disc pl-5 space-y-3 mt-3">
-                      <li>《FuTalk设计日记》主理人，专注于AI交互、用户体验、工具效率等领域，持续发布深度内容，累计发布超100期。</li>
-                      <li>主导设计10余款APP项目，涵盖B端、C端与G端，实现多端设计从0到1全流程。</li>
+                      <li>
+                        {isEnglish 
+                          ? 'Creator of "FuTalk Design Diary", focusing on AI interaction, UX, and tool efficiency. Published over 100 in-depth content pieces.'
+                          : '《FuTalk设计日记》主理人，专注于AI交互、用户体验、工具效率等领域，持续发布深度内容，累计发布超100期。'
+                        }
+                      </li>
+                      <li>
+                        {isEnglish 
+                          ? 'Led the design of over 10 APP projects covering B2B, B2C and G2C platforms, accomplishing the full 0-to-1 design process across multiple platforms.'
+                          : '主导设计10余款APP项目，涵盖B端、C端与G端，实现多端设计从0到1全流程。'
+                        }
+                      </li>
                     </ul>
                   </div>
                   
                   <div className="text-lg mb-6">
-                    <span className="font-bold text-primary text-xl mb-4 block">📚  AIGC内容布道者</span>
+                    <span className="font-bold text-primary text-xl mb-4 block">
+                      <TranslatedText textKey="about.aigcTitle" />
+                    </span>
                     <ul className="list-disc pl-5 space-y-3 mt-3">
-                      <li>优设年度创作者，站酷得火之星，伴鱼绘本AIGC大赛人气Top1。</li>
-                      <li>撰写10余篇AIGC实践教程，助力AI绘图软件课程创意及研发，覆盖入门到进阶课程。</li>
-                      <li>累计小红书发布30余篇爆款笔记及AIGC教程，探索更多AIGC知识普及与应用落地。</li>
+                      <li>
+                        {isEnglish 
+                          ? 'Annual creator of YouShe, Zcool Rising Star, and #1 Popular Choice at Banyu AIGC Picture Book Competition.'
+                          : '优设年度创作者，站酷得火之星，伴鱼绘本AIGC大赛人气Top1。'
+                        }
+                      </li>
+                      <li>
+                        {isEnglish 
+                          ? 'Authored over 10 AIGC practical tutorials, supporting AI drawing software course creativity and development, from beginner to advanced levels.'
+                          : '撰写10余篇AIGC实践教程，助力AI绘图软件课程创意及研发，覆盖入门到进阶课程。'
+                        }
+                      </li>
+                      <li>
+                        {isEnglish 
+                          ? 'Published over 30 popular notes and AIGC tutorials on Xiaohongshu, exploring AIGC knowledge popularization and application implementation.'
+                          : '累计小红书发布30余篇爆款笔记及AIGC教程，探索更多AIGC知识普及与应用落地。'
+                        }
+                      </li>
                     </ul>
                   </div>
                 </div>
@@ -95,7 +127,7 @@ export default function About() {
                 ref={elementsRef.skillsTitle}
                 className={`${contentVisible ? 'opacity-100' : 'opacity-0'} text-2xl font-bold mt-12 mb-6 ${isDarkTheme ? 'text-white' : 'text-dark'} transition-opacity duration-500`}
               >
-                擅长领域
+                <TranslatedText textKey="about.skillsTitle" />
               </h2>
               
               <ul 
@@ -103,14 +135,38 @@ export default function About() {
                 className={`${contentVisible ? 'opacity-100' : 'opacity-0'} grid grid-cols-1 md:grid-cols-2 gap-4 mb-12 transition-opacity duration-500`}
               >
                 {[
-                  { skill: "UI/UX设计", icon: "🎨" },
-                  { skill: "产品设计开发运营", icon: "🤖" },
-                  { skill: "自媒体博主", icon: "📝" },
-                  { skill: "AIGC 各领域探索者", icon: "🖼️" },
-                  { skill: " LoRA 模型训练", icon: "💻" },
-                  { skill: "独立设计师/创作者", icon: "🔍" },
-                  { skill: "数字游民进化中", icon: "🌍" },
-                  { skill: "各种感兴趣的探索", icon: "🧠" }
+                  { 
+                    skill: isEnglish ? "UI/UX Design" : "UI/UX设计", 
+                    icon: "🎨" 
+                  },
+                  { 
+                    skill: isEnglish ? "Product Design & Development" : "产品设计开发运营", 
+                    icon: "🤖" 
+                  },
+                  { 
+                    skill: isEnglish ? "Content Creator" : "自媒体博主", 
+                    icon: "📝" 
+                  },
+                  { 
+                    skill: isEnglish ? "AIGC Explorer" : "AIGC 各领域探索者", 
+                    icon: "🖼️" 
+                  },
+                  { 
+                    skill: isEnglish ? "LoRA Model Training" : " LoRA 模型训练", 
+                    icon: "💻" 
+                  },
+                  { 
+                    skill: isEnglish ? "Independent Designer/Creator" : "独立设计师/创作者", 
+                    icon: "🔍" 
+                  },
+                  { 
+                    skill: isEnglish ? "Digital Nomad in Evolution" : "数字游民进化中", 
+                    icon: "🌍" 
+                  },
+                  { 
+                    skill: isEnglish ? "Various Interesting Explorations" : "各种感兴趣的探索", 
+                    icon: "🧠" 
+                  }
                 ].map((item, index) => (
                   <li 
                     key={index} 
@@ -127,7 +183,10 @@ export default function About() {
                 ref={elementsRef.contactText}
                 className={`${contentVisible ? 'opacity-100' : 'opacity-0'} text-lg mt-16 mb-26 p-4 border-l-4 border-primary bg-primary/15 rounded transition-opacity duration-500`}
               >
-                不管你是好奇AI，还是热爱设计，或者正在寻找合作伙伴，欢迎随时联系我，也许我们可以一起创造点不一样的东西！
+                {isEnglish 
+                  ? "Whether you're curious about AI, passionate about design, or looking for a collaboration partner, feel free to contact me anytime. Perhaps we can create something different together!"
+                  : "不管你是好奇AI，还是热爱设计，或者正在寻找合作伙伴，欢迎随时联系我，也许我们可以一起创造点不一样的东西！"
+                }
               </p>
             </div>
           </div>

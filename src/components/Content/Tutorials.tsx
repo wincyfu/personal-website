@@ -4,10 +4,12 @@ import React, { useRef, useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { motion, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import useWechatArticles, { WechatArticle } from '@/hooks/useWechatArticles';
 import StarBorder from '../StarBorder';
+import TranslatedText from '@/components/TranslatedText';
 
 interface LocalTutorialCardProps {
   article: WechatArticle;
@@ -15,6 +17,7 @@ interface LocalTutorialCardProps {
 
 const LocalTutorialCard = ({ article }: LocalTutorialCardProps) => {
   const { isDarkTheme } = useTheme();
+  const { isEnglish } = useLanguage();
   const [tiltAngle, setTiltAngle] = useState({ x: 0, y: 0 });
   
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -95,7 +98,7 @@ const LocalTutorialCard = ({ article }: LocalTutorialCardProps) => {
                   : 'bg-primary/10 text-primary hover:bg-primary/20'
               }`}
             >
-              查看详情
+              {isEnglish ? 'View Details' : '查看详情'}
             </a>
           </div>
         </div>
@@ -139,6 +142,7 @@ const TutorialsSkeleton = () => {
 
 const Tutorials = () => {
   const { isDarkTheme } = useTheme();
+  const { isEnglish } = useLanguage();
   const { articles, loading, error } = useWechatArticles();
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -201,14 +205,14 @@ const Tutorials = () => {
             className={`text-[40px] font-bold font-['PingFang_SC'] mb-[10px] text-center ${isVisible ? '' : 'opacity-0'} ${isDarkTheme ? 'text-white' : 'text-dark'}`}
             style={{ opacity: isVisible ? 1 : 0 }}
           >
-            文章教程
+            <TranslatedText textKey="tutorials.title" />
           </h2>
           <p 
             ref={elementsRef.subtitle}
             className={`text-[18px] font-['PingFang_SC'] mb-16 text-center ${isVisible ? '' : 'opacity-0'} ${isDarkTheme ? 'text-white/50' : 'text-dark/50'}`}
             style={{ opacity: isVisible ? 1 : 0 }}
           >
-            AIGC落地实践应用技能与案例，助你高效入门与进阶
+            <TranslatedText textKey="tutorials.subtitle" />
           </p>
           
           {error && (
@@ -248,7 +252,7 @@ const Tutorials = () => {
                   : 'bg-primary text-white hover:bg-primary/90'
               }`}
             >
-              查看更多教程
+              {isEnglish ? 'View More Articles' : '查看更多文章'}
             </a>
           </div>
         </div>
