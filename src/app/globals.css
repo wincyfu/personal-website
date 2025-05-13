@@ -214,4 +214,186 @@ body {
   animation: waving-hand 2.5s infinite;
   transform-origin: 70% 70%;
   will-change: transform;
+}
+
+/* 隐藏滚动条样式 */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* 移动端设计卡片容器样式 */
+.mobile-design-container {
+  width: 100%;
+  position: relative;
+}
+
+/* 确保卡片容器与标题对齐 */
+.mobile-design-title {
+  position: relative;
+  z-index: 1;
+  margin-left: 0; /* 确保标题没有左边距 */
+}
+
+/* 移动端设计全宽容器 */
+.mobile-design-wrapper {
+  /* 改用相对定位，确保与父容器对齐 */
+  position: relative;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* 更改为hidden，控制溢出内容 */
+}
+
+/* 移动端设计滚动容器 - Webflow风格 */
+.mobile-design-scroll {
+  display: flex;
+  overflow-x: auto;
+  position: relative;
+  padding: 0 0 20px 0;
+  margin: 0;
+  width: 100%;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  gap: 20px;
+  /* 添加右侧空间，确保最后一个卡片完整显示 */
+  padding-right: 400px;
+  /* 添加平滑滚动 */
+  scroll-behavior: smooth;
+  overscroll-behavior-x: contain;
+}
+
+/* Webflow风格卡片样式 */
+.mobile-card {
+  flex: 0 0 auto;
+  width: 520px !important;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  overflow: hidden;
+  transform-origin: center center;
+  opacity: 0.4;
+  transform: scale(0.94);
+}
+
+/* 卡片内容 */
+.mobile-card-content {
+  height: 100%;
+  overflow: hidden;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+/* 优化SpotlightCard在卡片中的样式 */
+.mobile-card .card-spotlight {
+  height: 100%;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+}
+
+/* 深色主题下的SpotlightCard样式 */
+body:not(.light-theme) .mobile-card .card-spotlight {
+  background-color: #171717;
+  border: 1px solid #222222;
+}
+
+/* 浅色主题下的SpotlightCard样式 */
+body.light-theme .mobile-card .card-spotlight {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+}
+
+/* 可见卡片 */
+.mobile-card-visible {
+  opacity: 1 !important;
+  transform: scale(1) !important;
+  z-index: 2;
+  position: relative;
+}
+
+/* 暗淡卡片 */
+.mobile-card-dim {
+  opacity: 0.4;
+  transform: scale(0.94);
+  z-index: 1;
+}
+
+/* 第一个卡片 */
+.mobile-card-first {
+  margin-left: 0 !important;
+  z-index: 3;
+}
+
+/* 控制按钮样式 */
+.slider-control-button {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #333;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, opacity 0.3s ease;
+  /* 增加点击区域，提高按钮可用性 */
+  touch-action: manipulation;
+  z-index: 10;
+}
+
+.slider-control-button:hover {
+  background-color: #444;
+}
+
+.slider-control-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 卡片悬停效果 */
+.mobile-card:hover .mobile-card-content {
+  transform: translateY(-8px);
+}
+
+/* 深色模式下的卡片悬停阴影 */
+body:not(.light-theme) .mobile-card:hover .mobile-card-content {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* SpotlightCard悬停效果 */
+.mobile-card:hover .card-spotlight {
+  transform: translateY(-8px);
+}
+
+/* 深色模式下的SpotlightCard悬停阴影 */
+body:not(.light-theme) .mobile-card:hover .card-spotlight {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.mobile-card:hover .mobile-card-image {
+  transform: scale(1.05);
+}
+
+/* 卡片图片 */
+.mobile-card-image {
+  transition: transform 0.6s ease;
+}
+
+/* 媒体查询适配 */
+@media (max-width: 768px) {
+  .mobile-card {
+    width: 90% !important;
+  }
+}
+
+/* 适配平板设备的样式 */
+@media (min-width: 769px) and (max-width: 1023px) {
+  .mobile-card {
+    width: 520px !important;
+  }
 } 
