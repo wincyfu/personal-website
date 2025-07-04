@@ -204,7 +204,7 @@ export default function AllDesignsPage() {
           </div>
           
           <Link 
-            href="/portfolio-x7y9z" 
+                          href="/portfolio" 
             className={`mt-6 md:mt-0 inline-flex items-center px-6 py-3 rounded-md transition-colors duration-300 ${
               isDarkTheme 
                 ? 'bg-[#171717] hover:bg-[#222222] text-white' 

@@ -29,7 +29,7 @@ const Nav = () => {
   const navItems = hasVisitedPortfolio 
     ? [
         baseNavItems[0], // 首页
-        { name: getTranslatedText('nav.portfolio', isEnglish), href: '/portfolio-x7y9z' }, // 作品集放在首页后面
+        { name: getTranslatedText('nav.portfolio', isEnglish), href: '/portfolio' }, // 作品集放在首页后面
         ...baseNavItems.slice(1) // 其余导航项
       ] 
     : baseNavItems;

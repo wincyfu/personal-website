@@ -1,19 +1,53 @@
-# 忽略备份和日志文件
-/backups/
-/logs/
-/backup/
-/_next/
-/out/
-/.next/
-/node_modules/
+# 版本备份文件夹
+版本备份/
+版本备份/**
+
+# 个人网站备份
+personal-website/
+personal-website/**
+
+# 其他备份
+backup/
+backups/
+backup*/
+backups*/
+
+# 临时文件
+temp_*/
+fixed_files/
+temp_fix/
+versions/
+
+# Git相关
 .git/
+.gitignore
+
+# Node modules
+node_modules/
+
+# 构建输出
+.next/
+out/
+build/
+
+# 日志文件
 *.log
+logs/
+
+# 环境文件
+.env*
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
 # 忽略大文件
 *.tar.gz
 *.zip
 *.rar
 *.7z
 performance_optimizations.patch
+
 # 忽略临时目录
 /temp_convert/
 /tmp*/

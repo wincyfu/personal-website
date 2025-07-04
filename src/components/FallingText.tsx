@@ -125,7 +125,7 @@ const FallingText = ({
 
         if (!textRef.current) return;
         const wordSpans = textRef.current.querySelectorAll(".word");
-        const wordBodies = [...wordSpans].map((elem) => {
+        const wordBodies = Array.from(wordSpans).map((elem) => {
           const rect = elem.getBoundingClientRect();
 
           const x = rect.left - containerRect.left + rect.width / 2;

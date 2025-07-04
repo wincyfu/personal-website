@@ -8,7 +8,7 @@
   1. 📄 数据源文件：src/data/portfolio.ts 
      - 更新对应项目的 date 字段
   
-  2. 🖥️ 显示文件：src/app/portfolio-x7y9z/page.tsx (本文件)
+  2. 🖥️ 显示文件：src/app/portfolio/page.tsx (本文件)
      - 搜索"项目时间硬编码部分"注释
      - 更新对应的硬编码时间显示
   

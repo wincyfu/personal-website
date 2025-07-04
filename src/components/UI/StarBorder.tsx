@@ -1,4 +1,14 @@
+import React from "react";
 import "./StarBorder.css";
+
+interface StarBorderProps {
+  as?: React.ElementType;
+  className?: string;
+  color?: string;
+  speed?: string;
+  children?: React.ReactNode;
+  [key: string]: any;
+}
 
 const StarBorder = ({
   as: Component = "button",
@@ -7,7 +17,7 @@ const StarBorder = ({
   speed = "6s",
   children,
   ...rest
-}) => {
+}: StarBorderProps) => {
   return (
     <Component className={`star-border-container ${className}`} {...rest}>
       <div

@@ -2,7 +2,7 @@
 
 ## 页面概述
 
-该页面是个人网站的作品集展示模块，位于 `/portfolio-x7y9z` 路径下，展示了设计师的项目和作品，并提供了相关联系方式。
+该页面是个人网站的作品集展示模块，位于 `/portfolio` 路径下，展示了设计师的项目和作品，并提供了相关联系方式。
 
 ## 当前版本信息
 
@@ -19,7 +19,7 @@
 本页面存在项目时间的硬编码显示，修改项目时间时需要同时更新两个地方：
 
 1. **数据源文件**: `src/data/portfolio.ts` - 更新对应项目的 `date` 字段
-2. **显示文件**: `src/app/portfolio-x7y9z/page.tsx` - 搜索"项目时间硬编码部分"注释
+2. **显示文件**: `src/app/portfolio/page.tsx` - 搜索"项目时间硬编码部分"注释
 
 ❌ **常见错误**: 只更新其中一个地方，导致数据不一致  
 ✅ **正确做法**: 两个地方同时更新，确保数据一致性
@@ -882,7 +882,7 @@ SpotlightCard组件的CSS样式会影响所有使用该组件的页面，修改�
 ## 开发说明
 
 1. 在开发环境中，通过 `npm run dev` 启动服务
-2. 访问 http://localhost:3000/portfolio-x7y9z 查看页面
+2. 访问 http://localhost:3000/portfolio 查看页面
 3. 修改 `src/data/portfolio.ts` 可更新项目数据
 4. 多语言翻译文件位于 `src/utils/translations.ts`
 

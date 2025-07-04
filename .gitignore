@@ -33,6 +33,8 @@ yarn-error.log*
 /backups/
 /backup*
 /backups*
+/版本备份/
+版本备份/
 
 # 大型二进制文件
 **/*.mp4
@@ -69,3 +71,4 @@ node_modules/
 # 杂项
 .DS_Store
 
+.vercel

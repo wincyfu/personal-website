@@ -17,14 +17,14 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content, className 
         rehypePlugins={[rehypeHighlight]}
         remarkPlugins={[remarkGfm]}
         components={{
-          h1: ({ node, ...props }) => <h1 className="text-3xl font-bold mb-6 mt-8" {...props} />,
-          h2: ({ node, ...props }) => <h2 className="text-2xl font-bold mb-4 mt-6" {...props} />,
-          h3: ({ node, ...props }) => <h3 className="text-xl font-bold mb-3 mt-5" {...props} />,
-          p: ({ node, ...props }) => <p className="mb-4 leading-relaxed" {...props} />,
-          ul: ({ node, ...props }) => <ul className="list-disc pl-5 mb-4" {...props} />,
-          ol: ({ node, ...props }) => <ol className="list-decimal pl-5 mb-4" {...props} />,
-          li: ({ node, ...props }) => <li className="mb-1" {...props} />,
-          a: ({ node, ...props }) => (
+          h1: ({ node, ...props }: any) => <h1 className="text-3xl font-bold mb-6 mt-8" {...props} />,
+          h2: ({ node, ...props }: any) => <h2 className="text-2xl font-bold mb-4 mt-6" {...props} />,
+          h3: ({ node, ...props }: any) => <h3 className="text-xl font-bold mb-3 mt-5" {...props} />,
+          p: ({ node, ...props }: any) => <p className="mb-4 leading-relaxed" {...props} />,
+          ul: ({ node, ...props }: any) => <ul className="list-disc pl-5 mb-4" {...props} />,
+          ol: ({ node, ...props }: any) => <ol className="list-decimal pl-5 mb-4" {...props} />,
+          li: ({ node, ...props }: any) => <li className="mb-1" {...props} />,
+          a: ({ node, ...props }: any) => (
             <a
               className="text-blue-600 dark:text-blue-400 underline hover:text-blue-800 dark:hover:text-blue-300"
               target="_blank"
@@ -32,13 +32,13 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content, className 
               {...props}
             />
           ),
-          blockquote: ({ node, ...props }) => (
+          blockquote: ({ node, ...props }: any) => (
             <blockquote
               className="border-l-4 border-gray-300 dark:border-gray-700 pl-4 italic my-4"
               {...props}
             />
           ),
-          code: ({ node, inline, className, children, ...props }) => {
+          code: ({ node, inline, className, children, ...props }: any) => {
             const match = /language-(\w+)/.exec(className || '');
             return !inline && match ? (
               <div className="relative my-4">
@@ -57,25 +57,25 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content, className 
               </code>
             );
           },
-          img: ({ node, ...props }) => (
+          img: ({ node, ...props }: any) => (
             <img
               className="max-w-full h-auto my-4 rounded shadow-md"
               alt={props.alt || ""}
               {...props}
             />
           ),
-          table: ({ node, ...props }) => (
+          table: ({ node, ...props }: any) => (
             <div className="overflow-x-auto my-4">
               <table className="min-w-full border-collapse" {...props} />
             </div>
           ),
-          th: ({ node, ...props }) => (
+          th: ({ node, ...props }: any) => (
             <th
               className="bg-gray-100 dark:bg-gray-800 px-4 py-2 text-left font-bold border border-gray-300 dark:border-gray-700"
               {...props}
             />
           ),
-          td: ({ node, ...props }) => (
+          td: ({ node, ...props }: any) => (
             <td
               className="px-4 py-2 border border-gray-300 dark:border-gray-700"
               {...props}

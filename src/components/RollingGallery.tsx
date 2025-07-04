@@ -18,7 +18,7 @@ const IMGS = [
   "https://images.unsplash.com/photo-1585970480901-90d6bb2a48b5?q=80&w=3774&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
 ];
 
-const RollingGallery = ({ autoplay = false, pauseOnHover = false, images = [] }) => {
+const RollingGallery = ({ autoplay = false, pauseOnHover = false, images = [] }: any) => {
   const { isDarkTheme } = useTheme();
   const [isClient, setIsClient] = useState(false);
   const [isScreenSizeSm, setIsScreenSizeSm] = useState(false);
@@ -41,13 +41,13 @@ const RollingGallery = ({ autoplay = false, pauseOnHover = false, images = [] })
 
   const rotation = useMotionValue(0);
   const controls = useAnimation();
-  const autoplayRef = useRef();
+  const autoplayRef = useRef<NodeJS.Timeout | null>(null);
 
-  const handleDrag = (_, info) => {
+  const handleDrag = (_: any, info: any) => {
     rotation.set(rotation.get() + info.offset.x * dragFactor);
   };
 
-  const handleDragEnd = (_, info) => {
+  const handleDragEnd = (_: any, info: any) => {
     controls.start({
       rotateY: rotation.get() + info.velocity.x * dragFactor,
       transition: { type: "spring", stiffness: 60, damping: 20, mass: 0.1, ease: "easeOut" },
@@ -69,7 +69,11 @@ const RollingGallery = ({ autoplay = false, pauseOnHover = false, images = [] })
         rotation.set(rotation.get() - (360 / faceCount));
       }, 2000);
 
-      return () => clearInterval(autoplayRef.current);
+      return () => {
+        if (autoplayRef.current) {
+          clearInterval(autoplayRef.current);
+        }
+      };
     }
   }, [isClient, autoplay, rotation, controls, faceCount]);
 
@@ -86,7 +90,7 @@ const RollingGallery = ({ autoplay = false, pauseOnHover = false, images = [] })
 
   // Pause on hover with smooth transition
   const handleMouseEnter = () => {
-    if (autoplay && pauseOnHover && isClient) {
+    if (autoplay && pauseOnHover && isClient && autoplayRef.current) {
       clearInterval(autoplayRef.current);
       controls.stop(); // Stop the animation smoothly
     }

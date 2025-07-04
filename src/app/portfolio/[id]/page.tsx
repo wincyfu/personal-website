@@ -23,7 +23,7 @@ export default function ProjectDetail() {
     
     // 如果找不到项目，跳转到作品集首页
     if (!project) {
-      router.push('/portfolio-x7y9z');
+      router.push('/portfolio');
     }
   }, [project, router]);
   
@@ -34,7 +34,7 @@ export default function ProjectDetail() {
           <h1 className="text-2xl font-bold mb-4">项目不存在</h1>
           <p className="mb-6">您访问的项目不存在或已被删除</p>
           <Link
-            href="/portfolio-x7y9z"
+            href="/portfolio"
             className="px-4 py-2 bg-blue-500 text-white rounded"
           >
             返回作品集
@@ -54,7 +54,7 @@ export default function ProjectDetail() {
       <div className="max-w-4xl mx-auto mb-6">
         <div className="flex items-center space-x-2 text-sm">
           <Link 
-            href="/portfolio-x7y9z" 
+            href="/portfolio" 
             className={`hover:underline ${
               isDarkTheme ? 'text-gray-400 hover:text-white' : 'text-gray-500 hover:text-gray-800'
             } transition-colors duration-200`}
@@ -151,7 +151,7 @@ export default function ProjectDetail() {
       >
         <div className="flex justify-between items-center">
           <Link
-            href="/portfolio-x7y9z"
+            href="/portfolio"
             className={`inline-flex items-center ${
               isDarkTheme ? 'text-gray-400 hover:text-white' : 'text-gray-500 hover:text-gray-800'
             } transition-colors duration-200`}

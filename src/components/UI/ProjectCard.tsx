@@ -15,7 +15,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
   
   return (
     <Link 
-      href={`/portfolio-x7y9z/${project.id}`} 
+      href={`/portfolio/${project.id}`} 
       className={`group block rounded-xl overflow-hidden shadow-lg transition-all duration-300 transform hover:-translate-y-2 ${
         isDarkTheme ? 'bg-card hover:shadow-primary/20 border border-card-border' : 'bg-white hover:shadow-primary/30'
       }`}
