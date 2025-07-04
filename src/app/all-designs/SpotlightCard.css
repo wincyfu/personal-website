@@ -1,0 +1,43 @@
+/* 专门为全部设计作品页面的卡片样式 */
+.all-designs-card.card-spotlight {
+  position: relative;
+  border-radius: 1.5rem;
+  padding: 0 !important;
+  overflow: hidden;
+  --mouse-x: 50%;
+  --mouse-y: 50%;
+  --spotlight-color: rgba(41, 255, 153, 0.2);
+  --rotate-x: 0deg;
+  --rotate-y: 0deg;
+  color: #fff;
+}
+
+/* 仅为启用倾斜效果的卡片添加3D变换 */
+.all-designs-card.card-spotlight.tilt-enabled {
+  transform-style: preserve-3d;
+  transform: perspective(1000px) rotateX(var(--rotate-x)) rotateY(var(--rotate-y));
+  transition: transform 0.2s ease;
+}
+
+.all-designs-card.card-spotlight::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at var(--mouse-x) var(--mouse-y), var(--spotlight-color), transparent 80%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.all-designs-card.card-spotlight:hover::before,
+.all-designs-card.card-spotlight:focus-within::before {
+  opacity: 1;
+}
+
+/* 额外的全部设计作品页面专用样式 */
+.all-designs-card.card-spotlight > * {
+  box-sizing: border-box;
+} 

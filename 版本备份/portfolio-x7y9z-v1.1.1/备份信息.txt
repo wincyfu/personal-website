@@ -1,0 +1,44 @@
+作品集页面 v1.1.1 版本备份信息
+
+版本号: v1.1.1
+备份日期: 2025年6月25日
+备份内容: 联系文字大小调整与模块间距优化版本
+
+主要更新内容:
+1. 联系文字大小调整
+   - 将"如您对我的作品感兴趣或有合作意向，请随时联系我～"文字从 text-2xl sm:text-3xl 调整为 text-lg sm:text-xl
+   - 文字大小从 24px/30px 调整为 18px/20px，更加适中协调
+
+2. 联系模块间距优化
+   - 将联系部分的垂直内边距从 py-14 调整为 py-10
+   - 使联系模块更加紧凑，与整体页面布局更协调
+
+3. 背景和Footer统一
+   - 作品集页面背景与首页保持一致（深色主题使用 bg-black）
+   - 底部使用与首页相同的Footer组件，确保整站一致性
+
+4. 关于我页面宽度统一
+   - 关于我页面容器宽度调整为与作品集页面一致的 max-w-[1200px]
+   - 移除了可能影响宽度的 prose 类
+
+备份文件包含:
+- page.tsx (主页面文件)
+- README.md (文档文件)
+- globals.css (专用样式文件)
+- ProjectDetailModal.tsx (项目详情弹窗组件)
+- WatermarkOverlay.tsx (水印组件)
+- SpotlightCard.tsx 和 SpotlightCard.css (聚光灯卡片组件)
+- portfolio.ts (项目数据文件)
+- translations.ts (翻译文件)
+- Footer.tsx (底部组件)
+- 全局 globals.css 文件
+
+回退命令:
+cp -R 版本备份/portfolio-x7y9z-v1.1.1/* src/app/portfolio-x7y9z/
+cp 版本备份/portfolio-x7y9z-v1.1.1/ProjectDetailModal.tsx src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.1/WatermarkOverlay.tsx src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.1/SpotlightCard.* src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.1/globals.css src/app/
+cp 版本备份/portfolio-x7y9z-v1.1.1/portfolio.ts src/data/
+cp 版本备份/portfolio-x7y9z-v1.1.1/translations.ts src/utils/
+cp 版本备份/portfolio-x7y9z-v1.1.1/Footer.tsx src/components/Footer/ 

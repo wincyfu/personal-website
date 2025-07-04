@@ -1,0 +1,40 @@
+# v1.1.2 版本备份说明
+
+**版本**: v1.1.2 (弹窗其他作品区域优化版本)
+**日期**: 2025-06-25
+**状态**: 弹窗其他作品区域样式和交互优化
+
+## 主要更新内容
+
+- 优化弹窗中其他作品区域的视觉样式
+- 调整白色分割线透明度为60%
+- 优化标题和卡片间距，将padding修改为12
+- 调整标题与概览文字间距为8px
+- 统一卡片底色为#171717，与移动端设计卡片保持一致
+- 优化向右切换按钮样式和位置，添加投影效果
+- 移除留言相关统计信息，简化界面
+
+## 包含文件
+
+- src/app/portfolio-x7y9z/ (完整作品集页面)
+- ProjectDetailModal.tsx (项目详情弹窗组件)
+- WatermarkOverlay.tsx (水印组件)
+- SpotlightCard.tsx/.css (光晕卡片组件)
+- globals.css (全局样式)
+- portfolio.ts (作品数据)
+- translations.ts (多语言翻译)
+- Footer.tsx (底部组件)
+
+## 回退命令
+
+```bash
+cp -R 版本备份/portfolio-x7y9z-v1.1.2/* src/app/portfolio-x7y9z/
+cp 版本备份/portfolio-x7y9z-v1.1.2/ProjectDetailModal.tsx src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.2/WatermarkOverlay.tsx src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.2/SpotlightCard.* src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.2/globals.css src/app/
+cp 版本备份/portfolio-x7y9z-v1.1.2/portfolio.ts src/data/
+cp 版本备份/portfolio-x7y9z-v1.1.2/translations.ts src/utils/
+cp 版本备份/portfolio-x7y9z-v1.1.2/Footer.tsx src/components/Footer/
+```
+

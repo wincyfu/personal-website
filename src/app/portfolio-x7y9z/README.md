@@ -1,81 +1,745 @@
-# 作品集页面说明文档 (v1.0.1)
+# 作品集页面完整文档
 
 ## 页面概述
 
 该页面是个人网站的作品集展示模块，位于 `/portfolio-x7y9z` 路径下，展示了设计师的项目和作品，并提供了相关联系方式。
 
-## 版本信息
+## 当前版本信息
 
-**当前版本**：v1.0.1 (交互细节优化)
-**更新日期**：2023-08-10
-**状态**：卡片效果与交互细节优化版本
+**版本**: v1.2.0 (作品集页面最新版本) + All-Designs v1.2.0 (查看全部页面最新版本)  
+**日期**: 2025-07-04  
+**状态**: IP设计合集项目内容更新和PDF下载功能优化版本，所有功能完整运行，已完成完整备份
 
-## 当前功能
+**最新更新**: 作品集页面和All-Designs页面同步更新版本v1.2.0 (2025-07-04)  
+**更新内容**: IP设计合集项目弹窗内容更新（9个媒体文件）和PDF下载功能路径修复，卡片样式完全独立
 
-- **布局结构**：80% 宽度的内容区域，与主站的二级页面底色保持一致
-- **作品集分类**：按照 APP设计、网站设计、大屏设计和其他设计四个类别展示不同项目
-- **个人经历**：采用黑色背景卡片式布局，显示职业经历和项目经验
-- **水平滚动布局**：类别内的项目卡片支持左右滚动浏览，每次只滚动一张卡片
-- **查看全部功能**：每个类别下方添加"查看全部"按钮，点击跳转至全部作品页面
-- **联系方式弹窗**：点击按钮弹出水平布局的联系方式窗口
-  - 左侧展示微信二维码
-  - 右侧展示可复制的邮箱地址
-- **底部链接**：提供相关文章、产品和社交媒体的链接
-  - 文章链接直接跳转到相应的公众号文章
-  - 社交媒体链接直接跳转到对应平台
-- **固定版权条**：100% 宽度的黑色底部版权条，固定在页面底部
-- **返回主站导航**：从作品集页面返回主站后，导航栏会显示作品集链接
-- **文字解密效果**：在页面头部区域的标题和介绍文字上应用解密动画效果，增强第一印象
-  - 进入视图时自动触发解密效果
-  - 自定义解密速度、方向和显示效果
-  - 为标题和介绍文字添加视觉吸引力
-- **多语言支持**：页面内容支持中英文切换
-  - 通过顶部导航栏语言切换按钮控制
-  - 所有文本内容支持双语显示
-  - 包括标题、描述、项目卡片和联系信息
-- **卡片鼠标移入效果**：项目卡片添加光晕特效
-  - 与主站首页"关于我"部分卡片效果一致
-  - 鼠标悬停时显示轻微光晕
-  - 提升用户交互体验
+## ⚠️ 重要维护说明
 
-## 更新日志
+### 项目时间硬编码问题
+本页面存在项目时间的硬编码显示，修改项目时间时需要同时更新两个地方：
 
-### v1.0.1 交互细节优化版本
+1. **数据源文件**: `src/data/portfolio.ts` - 更新对应项目的 `date` 字段
+2. **显示文件**: `src/app/portfolio-x7y9z/page.tsx` - 搜索"项目时间硬编码部分"注释
 
-- 优化卡片视觉和交互效果
+❌ **常见错误**: 只更新其中一个地方，导致数据不一致  
+✅ **正确做法**: 两个地方同时更新，确保数据一致性
+
+### SpotlightCard组件样式问题
+SpotlightCard组件的CSS样式会影响所有使用该组件的页面，修改时需要特别注意：
+
+1. **样式文件**: `src/components/UI/SpotlightCard.css` - 控制卡片的基础样式
+2. **影响范围**: 作品集页面、查看全部页面等所有使用SpotlightCard的地方
+
+❌ **常见错误**: 在CSS中设置固定padding，导致内部元素的padding设置失效  
+✅ **正确做法**: CSS中避免设置padding，让各页面通过className控制具体间距
+
+### 浏览次数数据版本控制
+浏览次数使用localStorage存储，修改初始值时需要版本控制：
+
+1. **上下文文件**: `src/contexts/ProjectViewContext.tsx` - 管理浏览次数逻辑
+2. **版本控制**: 修改初始浏览次数时必须更新版本号
+
+❌ **常见错误**: 只修改初始值，不更新版本号，导致旧数据无法清除  
+✅ **正确做法**: 修改getInitialViewCount函数时同时更新currentVersion变量
+
+详细维护说明请参考项目根目录的 `PROJECT_TIME_MAINTENANCE.md` 文件。
+
+## 主要功能
+
+- **布局结构**: 80% 宽度的内容区域，与主站的二级页面底色保持一致
+- **作品集分类**: 按照 APP设计、网站设计、大屏设计和其他设计四个类别展示不同项目
+- **个人经历**: 采用黑色背景卡片式布局，显示职业经历和项目经验
+- **水平滚动布局**: 类别内的项目卡片支持左右滚动浏览，每次只滚动一张卡片
+- **查看全部功能**: 每个类别下方添加"查看全部"按钮，点击跳转至全部作品页面
+- **全部作品页面**: 重构的/all-designs页面，支持项目分类筛选、详情弹窗、浏览计数等完整功能
+- **联系方式弹窗**: 点击按钮弹出水平布局的联系方式窗口
+- **底部链接**: 提供相关文章、产品和社交媒体的链接
+- **返回主站导航**: 从作品集页面返回主站后，导航栏会显示作品集链接
+- **文字解密效果**: 在页面头部区域的标题和介绍文字上应用解密动画效果
+- **多语言支持**: 页面内容支持中英文切换
+- **卡片鼠标移入效果**: 项目卡片添加光晕特效
+- **深浅主题适配**: 卡片样式支持深色和浅色主题
+- **项目详情弹窗**: 优化的项目详情展示弹窗，支持查看项目详细内容和图片
+- **图片水印保护**: 在图片上添加"WincyFu Design"水印防止作品被盗用
+- **统一的标签样式**: 卡片内标签样式与主站"AI产品推荐"部分保持一致
+- **宽屏模式弹窗**: 支持超宽屏幕显示，最大宽度达120rem，提供更佳的图片浏览体验
+- **浏览计数功能**: 每次打开作品弹窗时自动增加浏览次数，从2000开始计数，数据持久化存储
+
+## 全部版本更新日志
+
+### v1.2.0 IP设计合集项目内容更新和PDF下载功能优化版本 (2025-07-04)
+
+- **IP设计合集项目弹窗内容更新**
+  - 更新IP设计合集项目的详情图片和视频内容，共9个媒体文件
+  - 第1-5张图片：`/images/ip-detial-1.jpg` 到 `/images/ip-detial-5.jpg`
+  - 第6个视频：`/videos/ip-detial-6.mp4`（支持视频播放器显示）
+  - 第7-9张图片：`/images/ip-detial-7.jpg` 到 `/images/ip-detial-9.jpg`
+  - ProjectDetailModal组件已完美支持视频文件自动识别和播放
+- **All-Designs页面PDF下载功能路径修复**
+  - 修复PDF下载按钮路径，从`/portfolio/WincyFu-Portfolio.pdf`更新为`/portfolio/WincyFu-DesignPortfolio.pdf`
+  - 确保点击"获取 PDF 作品集"按钮能正确下载用户指定的PDF文件
+  - 文件确认存在于`public/portfolio/WincyFu-DesignPortfolio.pdf`（9.9MB）
+- **卡片样式完全独立化**
+  - 修复全部设计作品页面的SpotlightCard.css样式影响首页"AI辅助编码产品"卡片的问题
+  - 将`.card-spotlight`选择器改为`.all-designs-card.card-spotlight`，确保样式只影响全部设计作品页面
+  - 全局SpotlightCard.css保持原有的`padding: 2rem`，确保首页卡片样式正确
+  - 实现三个SpotlightCard组件的完全独立：首页AI产品、全部设计作品页面、作品集页面
+- **技术架构优化**
+  - ProjectDetailModal组件支持视频文件的自动检测和播放（.mp4、.mov、.webm格式）
+  - 视频文件显示为带控制器的HTML5视频播放器
+  - 图片和视频都有统一的水印保护和右键禁用功能
+  - 优化媒体文件的加载逻辑和错误处理
+- **用户体验提升**
+  - IP设计合集项目弹窗内容更加丰富，包含图片和视频混合展示
+  - PDF下载功能正常工作，支持一键下载完整作品集
+  - 首页"AI辅助编码产品"卡片样式恢复正常，不再受全部设计作品页面样式影响
+  - 所有页面的卡片样式完全独立，互不干扰
+- **完整版本备份**
+  - 创建portfolio-x7y9z-v1.2.0和all-designs-page-v1.2.0完整备份
+  - 包含所有相关组件、样式文件、数据文件和配置文件
+  - 提供详细的版本回退指南和命令
+
+### All-Designs页面下载功能和样式优化版本v1.1.3 (2025-07-04)
+
+- **下载功能布局优化**
+  - 将"如需完整离线查看，欢迎下载我的 PDF 作品集。"提示文字移动到"全部设计作品"标题下方
+  - 替换原有的页面描述文字，使下载提示更加突出
+  - 将"下载作品集"按钮直接放在提示文字后面，形成连贯的行内布局
+  - 优化下载按钮样式：缩小尺寸（px-4 py-2）、减小字体（text-sm）、调整图标大小（w-4 h-4）
+- **按钮样式区分优化**
+  - 将下载按钮颜色从绿色（bg-primary）改为蓝色（bg-blue-600），与筛选标签形成明显区分
+  - 下载按钮悬停效果：hover:bg-blue-700
+  - 筛选标签保持原有的绿色系（激活时）和灰色系（未激活时）设计
+  - 提升用户界面的视觉层次和功能区分度
+- **筛选标签间距调整**
+  - 将筛选标签与作品卡片之间的间距从mb-12（48px）调整为mb-8（32px）
+  - 提供更紧凑的布局，改善视觉层次
+- **按钮文字优化**
+  - 将下载按钮文字从"下载作品集"更新为"获取 PDF 作品集"
+  - 更明确地表达用户将获得的文件类型
+  - 英文保持"Download Portfolio"不变
+- **PDF文件配置说明**
+  - 文件名称：WincyFu-Portfolio.pdf
+  - 存放位置：public/portfolio/WincyFu-Portfolio.pdf
+  - 访问路径：/portfolio/WincyFu-Portfolio.pdf
+  - 支持HTML5 download属性实现文件下载
+- **技术实现优化**
+  - 保持原有的SpotlightCard组件独立性，避免影响其他页面
+  - 使用蓝色按钮样式与绿色筛选标签形成对比
+  - 优化页面布局层次，提升用户体验
+- **用户体验提升**
+  - 下载功能更加显眼，位于页面顶部重要位置
+  - 按钮尺寸适中，不会过于突兀
+  - 颜色区分明确，功能识别度高
+  - 支持中英文双语显示
+
+### All-Designs页面卡片间距和浏览次数修复版本v1.1.2 (2025-01-25)
+
+- **卡片间距优化修复**
+  - 问题描述：SpotlightCard组件的CSS中设置了padding: 2rem（32px），导致卡片内容间距过大
+  - 修复方案：将SpotlightCard.css中的padding从2rem改为0，让内部元素的p-4（16px）生效
+  - 效果：卡片内容布局更加紧凑，视觉效果更佳
+- **项目浏览次数个性化修复**
+  - 问题描述：localStorage中存储了旧的浏览次数数据，导致新的个性化初始值无法生效
+  - 修复方案：添加版本控制机制（v1.1.2），自动清除不兼容的旧数据
+  - 个性化设置：为每个项目设置不同的初始浏览量（2067-2347次范围）
+  - 效果：AI健康助手显示2156次，好旅程显示2347次，其他项目各有不同浏览量
+- **技术架构改进**
+  - 修改src/components/UI/SpotlightCard.css移除默认padding
+  - 修改src/contexts/ProjectViewContext.tsx添加版本控制和个性化浏览次数
+  - 添加getInitialViewCount函数，为每个项目设置个性化初始浏览量
+  - 实现localStorage版本管理，确保数据兼容性
+- **重要维护说明**
+  - ⚠️ **SpotlightCard样式问题**：SpotlightCard.css中的padding会影响所有使用该组件的卡片
+  - ⚠️ **浏览次数数据**：修改初始浏览次数时需要更新版本号以清除旧数据
+  - ✅ **正确做法**：修改浏览次数逻辑时同时更新ProjectViewContext中的版本号
+
+### All-Designs页面弹窗修复版本v1.1.1 (2025-01-25)
+
+- **弹窗数据结构兼容性修复**
+  - 修复从all-designs页面点击项目卡片进入弹窗时的TypeError错误
+  - 错误原因：ProjectDetailModal组件期望project.images字段，但实际数据使用detailImages字段
+  - 更新TypeScript类型定义，支持images和detailImages两种字段格式
+  - 修改组件逻辑使用(project.detailImages || project.images || [])确保数组安全访问
+- **内容显示逻辑优化**
+  - 内容解析改进：优先使用project.content（详细内容），兜底使用project.description
+  - 图片数组处理：添加空数组兜底，防止undefined.map错误
+  - 错误处理增强：添加更完善的错误边界处理机制
+- **类型安全改进**
+  - 更新ProjectDetailModal的TypeScript类型，支持可选的images、detailImages、content字段
+  - 添加[key: string]: any以支持项目数据的其他字段
+  - 确保组件对不同数据结构格式的兼容性
+- **功能验证完成**
+  - ✅ 从all-designs页面点击项目卡片能正常打开弹窗
+  - ✅ 弹窗中的项目图片能正常显示
+  - ✅ 项目内容能正确解析和显示
+  - ✅ 支持detailImages字段的项目（portfolio.ts中的标准格式）
+  - ✅ 向后兼容使用images字段的项目
+
+### All-Designs页面优化版本v1.1.0 (2025-01-25)
+
+- **卡片样式完全统一**
+  - 调整卡片内边距与作品集页面保持完全一致（图片容器pt-[16px] px-[14px] pb-0，文字内容px-[20px] pt-[24px] pb-[20px]）
+  - 优化图片尺寸从200px调整为180px，与作品集页面一致
+  - 统一标题字体从20px调整为24px，描述文字从12px调整为14px，时间文字从10px调整为11px
+  - 调整各元素间距，确保视觉层次与作品集页面完全同步
+- **标签系统重构优化**
+  - 移除预览数量标签，界面更加简洁专注
+  - 实现专属标签系统，为每个项目配置个性化标签（与作品集页面标签完全一致）
+  - 移动端设计项目使用AI赋能医疗、智慧医疗、低碳环保等专业标签
+  - 网站/后台设计项目使用多角色协同、一体化园所平台等标签
+  - 大屏设计项目使用城市建设监管、智慧工地、数据驱动设计等标签
+  - 其他设计项目使用品牌设计、少儿教育、设计系统构建等标签
+- **弹窗功能完全修复**
+  - 修复ProjectDetailModal组件的props传递错误
+  - 移除不必要的isDarkTheme和isEnglish props传递
+  - 保持currentProjectId正确传递，确保弹窗能正确识别当前项目
+  - 解决从all-designs页面点击进入项目详情弹窗的显示问题
+- **项目时间显示统一**
+  - 实现与作品集页面完全一致的项目时间硬编码显示
+  - 支持中英文双语时间格式切换
+  - 确保数据一致性，避免时间显示不同步问题
+- **用户体验全面提升**
+  - 视觉一致性：卡片样式与作品集页面完全统一
+  - 信息密度优化：移除冗余的浏览次数显示，聚焦核心项目信息
+  - 交互体验改善：确保所有功能（筛选、弹窗、标签切换）正常工作
+  - 响应式设计：保持在各种设备上的良好显示效果
+
+### All-Designs页面完整重构v1.0.0 (2025-07-04)
+
+- **页面布局完全重构**
+  - 重新设计/all-designs页面，使其与作品集页面保持完全一致的布局结构
+  - 采用相同的max-w-[1200px]容器宽度、字体样式和视觉设计
+  - 统一页面标题、描述文字和整体排版风格
+- **项目卡片设计统一**
+  - 使用SpotlightCard组件，与作品集页面的卡片光晕效果保持一致
+  - 卡片尺寸调整为200px高度，适应3列网格布局
+  - 支持深色/浅色主题切换，样式与作品集页面完全同步
+  - 添加鼠标悬停的图片缩放效果和视觉反馈
+- **功能完整性实现**
+  - 实现项目详情弹窗功能，点击卡片可查看完整项目内容
+  - 集成浏览计数功能，显示每个项目的实时浏览次数
+  - 添加项目分类筛选功能，支持按移动端、网站、大屏、其他设计类别过滤
+  - 支持中英文双语切换，所有文本内容都有对应翻译
+- **导航和交互优化**
+  - 添加返回作品集页面的按钮，位于页面右上角，样式与主题保持一致
+  - 筛选标签采用圆角按钮设计，支持主色调和主题色切换
+  - 无搜索结果时显示友好的提示信息和重置按钮
+  - 保持与作品集页面相同的交互逻辑和用户体验
+- **样式系统完善**
+  - 在globals.css中添加line-clamp-3样式，支持文本截断显示
+  - 确保所有样式与作品集页面保持一致性
+  - 优化响应式布局，支持各种屏幕尺寸的良好显示
+- **多语言支持扩展**
+  - 在translations.ts中添加"全部设计作品"的中英文翻译定义
+  - 确保页面标题、描述、按钮文字等都支持语言切换
+  - 使用getTranslatedText函数统一处理多语言文本
+- **技术架构统一**
+  - 使用与作品集页面相同的上下文（useTheme、useLanguage、useProjectView）
+  - 复用ProjectDetailModal组件，确保弹窗功能的一致性
+  - 保持相同的项目数据结构和ID映射关系
+- **用户体验提升**
+  - 页面加载速度优化，图片懒加载和错误处理
+  - 统一的视觉反馈和交互动画
+  - 保持与作品集页面完全一致的操作习惯
+
+### v1.1.12 当前稳定版本 (2025-07-04)
+
+- **项目标签个性化定制版本**
+  - 完成了网站/后台设计、大屏设计、其他设计三个模块中所有项目的小标签个性化定制
+  - **网站/后台设计模块标签更新**：
+    - 幼儿园管理系统项目：小标签更新为"多角色协同"、"一体化园所平台"
+    - 官网设计合集项目：小标签更新为"多行业网站设计"、"Web端展示"
+  - **大屏设计模块标签更新**：
+    - 项目管理大屏项目：小标签更新为"城市建设监管"、"智慧工地"
+    - 运维管理大屏项目：小标签更新为"运维流程闭环"、"设备全生命周期管理"
+    - 大屏设计合集项目：小标签更新为"多行业数据可视化"、"数据驱动设计"
+  - **其他设计模块标签更新**：
+    - LOGO设计-知之教育项目：小标签更新为"品牌设计"、"少儿教育"
+    - IP设计合集项目：小标签更新为"IP形象"、"视觉延展设计"
+    - 组件库建立项目：小标签更新为"设计系统构建"、"团队协同"
+  - **移动端设计模块标签优化**：
+    - AI健康助手项目：将第二个小标签从"C端"更新为"智慧医疗"
+    - 保持第一个标签"AI赋能医疗"不变
+- **网站品牌标识完善**
+  - 配置了完整的Favicon系统，提升品牌识别度
+  - 主要使用SVG格式的favicon（`/images/favicon.svg`），确保在任何尺寸下都清晰显示
+  - 配置了多设备兼容的图标方案，包括苹果设备和安卓设备支持
+  - 设置了网站主题色（#22c45e）用于浏览器界面适配
+  - 创建了Web应用清单文件（site.webmanifest）支持PWA特性
+- **新增标签翻译定义**
+  - 在翻译文件中新增18个标签的中英文定义，涵盖各个设计模块的专业术语
+  - 包括：一体化园所平台、多行业网站设计、城市建设监管、智慧工地、运维流程闭环、设备全生命周期管理、多行业数据可视化、数据驱动设计、品牌设计、少儿教育、IP形象、视觉延展设计、设计系统构建、团队协同、智慧医疗等
+- **技术实现优化**
+  - 使用条件渲染根据项目ID显示不同的标签组合
+  - 所有新增标签完美支持中英文双语切换
+  - 标签样式保持统一（绿色背景、12px字体、圆角矩形）
+  - 添加flex-wrap确保标签在小屏幕上正常换行显示
+  - 优化了favicon配置，采用现代Web标准的SVG优先策略
+- **项目标签体系完善**
+  - 实现了所有四个设计模块（移动端设计、网站/后台设计、大屏设计、其他设计）的标签个性化
+  - 每个项目都有了符合其特点和行业属性的专属标签
+  - 提升了项目展示的专业性和准确性
+- **数据一致性保障**
+  - 确保所有标签在中英文状态下都能正确显示对应翻译
+  - 保持了其他所有功能（浏览计数、弹窗、水印、光晕效果等）的正常工作
+  - 维护了响应式布局在各设备上的良好表现
+- **完善版本管理**
+  - 创建完整版本备份，包含所有相关组件和文件
+  - 提供详细的版本回退指南和命令
+  - 确保版本间的平滑切换和回退能力
+
+### v1.1.11 稳定版本 (2025-07-03)
+
+- **大屏设计模块完善版本**
+  - 完善了大屏设计模块的三个项目卡片：项目管理大屏、运维管理大屏、大屏设计合集
+  - **项目管理大屏**：
+    - 更新项目简介为城市重大工程建设的全过程数字化管理系统描述
+    - 项目时间设定为2023.06-2023.08
+    - 弹窗内容采用标准格式：项目简介、核心功能、设计理念
+    - 预览图更新为public/images/xmgldp.jpg
+    - 详情图片配置为4张：xiangmuguanli-detail-1.jpg到xiangmuguanli-detail-4.jpg
+  - **运维管理大屏**：
+    - 项目名称从"运维大屏"更新为"运维管理大屏"
+    - 更新项目简介为路网机电设施的智能化运维管理平台描述
+    - 项目时间设定为2024.03-2024.04
+    - 弹窗内容更新为运维系统的详细介绍
+    - 预览图更新为public/images/ywgldp.jpg
+    - 详情图片配置为2张：yydp-detail-1.jpg和yydp-detail-2.jpg
+  - **大屏设计合集**：
+    - 更新项目简介为多个大屏界面设计稿的综合展示描述
+    - 项目时间设定为2021-2023期间
+    - 弹窗内容简化为纯图片展示，去掉文字介绍
+    - 预览图更新为public/images/dpsjhj.jpg
+    - 详情图片配置为7张：dphj-detail-1.jpg到dphj-detail-7.jpg
+- **其他设计模块项目更新**
+  - **LOGO设计-知之教育项目**：
+    - 更新项目简介为知之教育Logo设计的详细描述
+    - 项目时间设定为2020.11
+    - 弹窗内容包含设计理念和创意基础的详细介绍
+    - 预览图更新为public/images/zzjy.jpg
+    - 详情图片配置为5张：zhizhijiaoyu-detail-1.jpg到zhizhijiaoyu-detail-5.jpg
+  - **IP设计合集项目**：
+    - 将项目名称从"IP设计"更新为"IP设计合集"
+    - 更新项目简介为原创IP形象设计作品的详细描述
+    - 项目时间设定为2024-2025
+    - 预览图更新为public/images/ipsjhj.jpg
+    - 弹窗内容更新为IP视觉设计项目的详细介绍，涵盖文旅IP、潮玩IP、App形象延伸等多元领域
+    - 强调系统化形象策划与多场景延展，以及品牌传播价值
+  - **组件库建立项目**：
+    - 将项目名称从"项目组件设计"更新为"组件库建立"
+    - 更新项目简介为组件化思维重构设计流程的详细描述
+    - 项目时间设定为2020.11-2021.05
+    - 弹窗内容更新为组件库建立的详细介绍和价值体现
+    - 预览图更新为public/images/xmzjk.jpg
+    - 详情图片配置为4张：xiangmuzujian- detail-1.jpg到xiangmuzujian- detail-4.jpg
+    - 修复了图片路径中的空格问题，确保弹窗中图片正常显示
+- **数据一致性保障**
+  - 同时更新了`src/data/portfolio.ts`数据文件中的项目信息
+  - 更新了`src/app/portfolio-x7y9z/page.tsx`中的项目时间硬编码部分
+  - 确保项目ID映射关系和时间显示的完全一致性
+- **功能稳定性确认**
+  - 所有现有功能（浏览计数、弹窗、水印、光晕效果等）正常工作
+  - 中英文双语支持功能完整
+  - 响应式布局在各设备上表现良好
+- **完善版本管理**
+  - 创建完整版本备份，包含所有相关组件和文件
+  - 提供详细的版本回退指南和命令
+  - 确保版本间的平滑切换和回退能力
+
+### v1.1.10 稳定版本 (2025-07-02)
+
+- **项目顺序调整版本**
+  - 将"近视无忧项目"从第8位移动到第5位（儿保管家项目后面）
+  - 相应调整其他项目的顺序和ID映射关系：
+    - 近视无忧项目：project-5 (2024.06-2024.08) ← 移动到第5位
+    - 锦礼商城项目：project-6 (2020.04-2020.05) ← 原project-5顺延
+    - VAV交友：project-7 (2020.12-2021.02) ← 原project-6顺延  
+    - 速速修项目：project-8 (2022.02-2022.03) ← 原project-7顺延
+- **数据一致性保障**
+  - 同时更新了`src/data/portfolio.ts`数据文件中的项目顺序
+  - 更新了`src/app/portfolio-x7y9z/page.tsx`中的项目时间硬编码部分
+  - 确保项目ID映射关系和时间显示的完全一致性
+- **功能稳定性确认**
+  - 所有现有功能（浏览计数、弹窗、水印、光晕效果等）正常工作
+  - 中英文双语支持功能完整
+  - 响应式布局在各设备上表现良好
+- **完善版本管理**
+  - 创建完整版本备份，包含所有相关组件和文件
+  - 提供详细的版本回退指南和命令
+  - 确保版本间的平滑切换和回退能力
+
+### v1.1.9 稳定版本 (2025-07-02)
+
+- **模块间距优化版本**
+  - 优化作品集页面所有设计模块之间的间距，提升视觉层次感
+  - 将移动端设计标题到上方表格的间距设为100px (`mt-25`)
+  - 将所有查看全部按钮的底部间距调整为128px (`mb-32`)，增强模块分隔效果
+  - 修正了Tailwind CSS类名使用问题，确保间距样式正确生效
+- **项目内容更新**
+  - 更新网站/后台设计标题，从"网站设计"改为"网站/后台设计"
+  - 更新网站/后台设计描述，更好地体现后台管理系统的内容
+  - 将第一个网站设计项目替换为"幼儿园管理系统"
+  - 更新幼儿园管理系统项目详细信息：项目时间为2020.02-2020.12，包含6张详情图片
+- **项目图片配置优化**
+  - 锦礼商城项目弹窗图片更新为4张：detail-5-1.jpg 到 detail-5-4.jpg
+  - ECOGO环保回收项目弹窗新增第五张图片：ecogo-detail-5.jpg
+  - 幼儿园管理系统项目弹窗配置6张图片：youeryuan-detail-1.jpg 到 youeryuan-detail-6.jpg
+- **完善版本管理**
+  - 创建完整版本备份，包含所有相关组件和文件
+  - 备份包括：页面文件、组件文件、样式文件、数据文件、翻译文件、上下文文件等
+  - 提供详细的版本回退指南和命令
+  - 确保版本间的平滑切换和回退能力
+
+### v1.1.8 稳定版本 (2025-07-01)
+
+- **版本稳定性确认**
+  - 确认当前版本所有功能正常运行
+  - 移动端设计8个项目的显示顺序：1.好旅程、2.AI健康助手、3.ECOGO环保项目、4.儿宝管家、5.锦礼商城、6.VAV交友、7.速速修、8.近视无忧
+  - 所有项目时间显示正确：好旅程(2019.12-2020.10)、AI健康助手(2025.03)、ECOGO环保项目(2024.03)、儿宝管家(2018.10-2019.06)、锦礼商城(2020.04-2020.05)、VAV交友(2020.12-2021.02)、速速修(2022.02-2022.03)、近视无忧(2024.06-2024.08)
+- **功能完整性验证**
+  - 浏览计数功能正常工作，每次打开弹窗自动增加浏览次数
+  - 项目详情弹窗、水印保护、光晕效果等所有特效正常
+  - 中英文双语支持功能完整
+  - 响应式布局在各设备上表现良好
+- **完整版本备份**
+  - 创建完整版本备份，包含所有相关组件和文件
+  - 备份包括：页面文件、组件文件、样式文件、数据文件、翻译文件、上下文文件等
+  - 提供详细的版本回退指南和命令
+  - 确保版本间的平滑切换和回退能力
+
+### v1.1.7 移动端设计卡片顺序调整版本 (2025-07-01)
+
+- **调整移动端设计卡片顺序**
+  - 将移动端设计8个项目的显示顺序调整为：1.好旅程、2.AI健康助手、3.ECOGO环保项目、4.儿宝管家、5.锦礼商城、6.VAV交友、7.速速修、8.AI自习室
+  - 相应调整项目ID映射关系：AI健康助手(project-2)、ECOGO环保项目(project-3)、儿宝管家(project-4)、锦礼商城(project-5)、VAV交友(project-6)、速速修(project-7)、AI自习室(project-8)
+  - 确保数据结构的一致性和完整性
+- **保持所有内容不变**
+  - 所有项目的文字内容、图片内容和详细描述完全保持不变
+  - 项目标题、描述、标签和详细内容完全保持不变
+  - 其他设计类别（网站设计、大屏设计、其他设计）的顺序和内容保持不变
+- **功能模块正常运行**
+  - 浏览计数、弹窗、水印等所有功能模块正常工作
+  - 中英文双语支持功能正常
+  - 响应式布局和交互效果保持不变
+- **完善版本管理**
+  - 创建完整版本备份，包含所有相关组件和文件
+  - 提供详细的版本回退指南和命令
+  - 确保版本间的平滑切换和回退能力
+
+### v1.1.6 AI健康助手项目时间优化版本 (2025-07-01
+
+- **优化AI健康助手项目时间显示**
+  - 将AI健康助手项目卡片中的时间从`2024.12-2025.03`修改为`2025.03`
+  - 同时更新数据文件中的时间格式，确保一致性
+  - 支持中英文双语时间显示：
+    - 中文模式：`项目时间：2025.03`
+    - 英文模式：`Project Time: 2025.03`
+- **保持所有其他内容不变**
+  - AI健康助手项目的4张配图保持不变（detail-3-1.jpg 到 detail-3-4.jpg）
+  - 项目标题、描述、标签和详细内容完全保持不变
+  - 其他所有项目的信息和时间显示保持不变
+  - 所有功能模块（浏览计数、弹窗、水印等）正常工作
+- **完善版本管理**
+  - 创建完整版本备份，包含所有相关组件和文件
+  - 提供详细的版本回退指南和命令
+  - 确保版本间的平滑切换和回退能力
+
+### v1.1.5 浏览计数功能版本 (2025-06-30)
+- **实现作品集弹窗浏览计数功能**
+  - 创建ProjectViewContext上下文管理浏览次数
+  - 每次打开弹窗时自动增加对应项目的浏览次数
+  - 浏览次数初始值设置为2000，每次打开增加1
+  - 使用localStorage持久化存储浏览记录，刷新页面后数据不丢失
+- **优化浏览计数逻辑**
+  - 使用useRef跟踪弹窗状态，只在从关闭变为打开时计数
+  - 避免组件重新渲染时重复计数的问题
+  - 确保每次真正的弹窗打开操作只增加一次浏览次数
+- **集成到应用架构**
+  - 在layout.tsx中添加ProjectViewProvider，确保全应用可用
+  - 修改ProjectDetailModal组件，集成浏览计数功能
+  - 保持原有弹窗功能不变，新增浏览统计显示
+- **数据持久化与性能优化**
+  - 使用localStorage存储每个项目的浏览次数
+  - 客户端渲染优化，避免服务端渲染不一致问题
+  - 提供getViewCount和incrementViewCount接口供组件使用
+- **用户体验提升**
+  - 实时显示准确的浏览次数，而非固定数值
+  - 浏览记录在不同会话间保持一致
+  - 无论从作品集页面还是其他页面打开弹窗都正确计数
+- **完善版本管理**
+  - 创建完整版本备份，包含所有相关组件和上下文文件
+  - 提供详细的版本回退指南和命令
+
+### v1.1.4 项目时间更新版本 (2025-06-27)
+- **更新所有项目的时间显示格式**
+  - 根据历史版本设定，恢复所有项目的正确时间格式
+  - 移动端设计项目时间：
+    - 好旅程项目：`项目时间：2019.12-2020.10`
+    - AI健康助手：`项目时间：2018.10-2019.06`
+    - 儿宝管家项目：`项目时间：2021.04-2021.07`
+    - 锦礼商城项目：`项目时间：2020.04-2020.05`
+    - VAV交友：`项目时间：2020.12-2021.02`
+    - 速速修项目：`项目时间：2022.02-2022.03`
+    - AI自习室：`项目时间：2024.08-2024.10`
+    - ECOGO环保回收项目：`项目时间：2024.03`
+  - 网站设计项目时间：
+    - AIGC创作平台：`项目时间：2023.12-2024.02`
+    - 产品设计系统：`项目时间：2024.01-2024.03`
+  - 大屏设计项目时间：
+    - 沉浸式教育平台：`项目时间：2023.09-2023.12`
+    - 数据可视化大屏：`项目时间：2024.03-2024.06`
+  - 其他设计项目时间：
+    - 健康监测应用：`项目时间：2025.03`
+    - 社交媒体重设计：`项目时间：2022.02-2022.03`
+    - 音乐创作工具：`项目时间：2020.04-2020.05`
+- **支持中英文双语时间显示**
+  - 中文模式：使用"项目时间："前缀
+  - 英文模式：使用"Project Time:"前缀
+  - 保持时间格式的一致性（年.月-年.月 或 年.月）
+- **解决Next.js模块加载错误**
+  - 清理.next缓存，解决模块找不到的问题
+  - 确保开发服务器正常运行
+- **完善版本管理**
+  - 创建完整版本备份，包含所有相关组件和样式文件
+  - 提供详细的版本回退指南和命令
+
+### v1.1.3 弹窗其他作品区域优化版本 (2025-06-25)
+- **优化弹窗中其他作品区域的视觉样式**
+  - 将其他作品上方的白色分割线透明度调整为60%，使用`border-white/60`样式
+  - 提供更加柔和的视觉分隔效果，与黑色背景更好地融合
+- **调整标题和卡片间距**
+  - 将标题文字距离上方图片和下方卡片的padding修改为12px
+  - 优化标题与概览文字之间的margin为8px
+  - 提供更合理的视觉层次和间距分布
+- **统一卡片底色设计**
+  - 将其他作品卡片底色修改为`#171717`，与移动端设计卡片底色保持一致
+  - 确保整站设计语言的统一性和视觉协调性
+- **优化向右切换按钮**
+  - 将按钮底色同样修改为`#171717`，保持与卡片的一致性
+  - 添加投影效果`boxShadow: '0 4px 12px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.3)'`
+  - 按钮位置调整为卡片上下居中，可遮盖最后一个卡片的右侧部分
+  - 增强按钮的视觉层次感和可点击提示
+- **简化统计信息显示**
+  - 移除弹窗页面点赞区域中的留言和留言数量统计
+  - 保留点赞数和浏览数统计，界面更加简洁
+  - 减少不必要的信息干扰，聚焦核心功能
+- **完善版本管理**
+  - 创建完整版本备份，包含所有相关组件和样式文件
+  - 提供详细的版本回退指南和命令
+
+### v1.1.2 联系文字大小调整与模块间距优化版本 (2025-06-25)
+
+- **优化弹窗中其他作品区域的视觉样式**
+  - 将其他作品上方的白色分割线透明度调整为60%，使用`border-white/60`样式
+  - 提供更加柔和的视觉分隔效果，与黑色背景更好地融合
+- **调整标题和卡片间距**
+  - 将标题文字距离上方图片和下方卡片的padding修改为12px
+  - 优化标题与概览文字之间的margin为8px
+  - 提供更合理的视觉层次和间距分布
+- **统一卡片底色设计**
+  - 将其他作品卡片底色修改为`#171717`，与移动端设计卡片底色保持一致
+  - 确保整站设计语言的统一性和视觉协调性
+- **优化向右切换按钮**
+  - 将按钮底色同样修改为`#171717`，保持与卡片的一致性
+  - 添加投影效果`boxShadow: '0 4px 12px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.3)'`
+  - 按钮位置调整为卡片上下居中，可遮盖最后一个卡片的右侧部分
+  - 增强按钮的视觉层次感和可点击提示
+- **简化统计信息显示**
+  - 移除弹窗页面点赞区域中的留言和留言数量统计
+  - 保留点赞数和浏览数统计，界面更加简洁
+  - 减少不必要的信息干扰，聚焦核心功能
+- **完善版本管理**
+  - 创建完整版本备份，包含所有相关组件和样式文件
+  - 提供详细的版本回退指南和命令
+
+### v1.1.1 联系文字大小调整与模块间距优化版本 (2025-06-25)
+
+- **优化联系部分文字大小**
+  - 将"如您对我的作品感兴趣或有合作意向，请随时联系我～"文字大小调整
+  - 从 `text-2xl sm:text-3xl`（24px/30px）调整为 `text-lg sm:text-xl`（18px/20px）
+  - 使联系文字更加适中，与整体页面文字层次更协调
+- **优化联系模块间距**
+  - 将联系部分的垂直内边距从 `py-14` 调整为 `py-10`
+  - 使联系模块更加紧凑，提升整体页面的视觉节奏
+- **统一页面背景和Footer**
+  - 作品集页面背景与首页保持一致（深色主题使用 `bg-black`）
+  - 底部使用与首页相同的Footer组件，确保整站视觉一致性
+- **修复关于我页面宽度问题**
+  - 关于我页面容器宽度调整为与作品集页面一致的 `max-w-[1200px]`
+  - 移除了可能影响宽度的 `prose` 类，确保页面切换时宽度保持一致
+- **完善版本管理**
+  - 创建完整版本备份，包含所有相关组件和样式文件
+  - 提供详细的版本回退指南和命令
+
+### v1.1.0 卡片尺寸优化与经历布局调整版本 (2025-06-25)
+
+- **优化作品集卡片显示布局**
+  - 将卡片显示方式从4个完整卡片调整为3个完整卡片+第4个卡片露出1/3
+  - 卡片宽度从520px优化为380px，适应新的布局需求
+  - 图片高度从240px调整为180px，保持良好的视觉比例
+  - 内边距从26px调整为20px，使内容更加紧凑
+- **调整卡片内容文字尺寸**
+  - 标题字体从30px调整为24px
+  - 标签字体从14px调整为12px，内边距相应调整
+  - 描述文字从16px调整为14px
+  - 时间文字从12px调整为11px
+  - 各元素间距相应优化，提升整体视觉协调性
+- **优化我的经历模块布局**
+  - 公司名和职位的左边距从32px调整为20px
+  - 使公司名和职位向左移动，视觉上更加紧凑
+  - 保持其他内容和布局不变
+- **提升用户体验**
+  - 在有限的屏幕空间内展示更多内容
+  - 改善卡片间的视觉层次和信息密度
+  - 保持响应式设计和交互功能不变
+- **完善版本管理**
+  - 创建完整版本备份，包含所有相关组件和样式文件
+  - 提供详细的版本回退指南和命令
+
+### v1.0.9 AI健康助手项目更新版本 (2025-05-14)
+
+- **更新移动端设计第三个卡片内容**
+  - 将原电商购物应用卡片替换为AI健康助手项目
+  - 更新项目标题为"AI健康助手项目"
+  - 更新项目描述为"AI健康助手是一款人工智能技术的健康管理小程序，旨在为用户提供便捷、个性化的健康服务。包括智能导诊与挂号、全流程就医陪诊、健康档案管理、智能报告解读、个性化健康建议等"
+  - 更新项目时间为"项目时间：2025.03"
+  - 更换项目预览图为"AI-health-app.jpg"
+  - 更换详情页图片为"detail-3-1.jpg"
+- **修复代码语法错误**
+  - 修复移动端设计卡片中的h3标签错误，确保代码语法正确
+  - 优化移动端设计卡片的代码结构
+  - 确保页面正常显示和运行
+- **完善版本管理**
+  - 创建完整版本备份
+  - 提供版本回退支持
+
+### v1.0.8 移动端设计项目时间更新版本 (2025-05-14)
+
+- **更新移动端设计项目时间信息**
+  - 修改第一个卡片预览的项目时间为"项目时间：2019.12-2020.10"
+  - 保持其他卡片内容不变
+  - 确保信息准确性和一致性
+- **完善版本管理**
+  - 创建完整版本备份
+  - 提供版本回退支持
+
+### v1.0.7 弹窗宽度优化版本 (2025-05-13)
+
+- **优化项目详情弹窗宽度与布局**
+  - 将弹窗最大宽度从90rem增加到120rem，提供更宽阔的查看体验
+  - 优化弹窗响应式布局，移动端宽度为99%，平板为98%，桌面为97%
+  - 移除弹窗中图片下方的文件名和序号说明，使界面更简洁
+  - 解决多次打开弹窗导致的布局错位问题
+  - 优化弹窗内部的边距和间距，提供更一致的视觉体验
+- **改进弹窗性能与稳定性**
+  - 重构ProjectDetailModal组件，修复JSX语法问题
+  - 移除冗余的组件导入和调试代码
+  - 优化图片加载逻辑和错误处理
+  - 提升弹窗打开和关闭的响应速度
+
+### v1.0.6 标签样式优化版本 (2025-05-13)
+
+- **优化卡片标签样式**
+  - 统一作品集页面所有卡片标签样式，与主站首页"AI产品推荐"中的标签保持一致
+  - 将标签背景色修改为rgba(34, 196, 94, 0.2)，使用半透明浅绿色
+  - 将标签文字颜色修改为#22c45e绿色
+  - 保持标签圆角矩形样式和14px的文字大小不变
+  - 为不同设计类别添加不同的第二标签：移动端设计为"C端"、网站设计为"B端"、大屏设计为"数据"、其他设计为"创意"
+  - 所有标签均添加"从0到1"第一标签，保持视觉一致性
+- **提升设计统一性**
+  - 确保卡片组件在各个部分的视觉表现一致
+  - 增强整体网站的品牌识别度
+  - 通过统一设计语言提升用户体验
+
+### v1.0.5 图片水印保护功能 (2025-08-01)
+
+- **添加图片水印保护功能**
+  - 在作品集弹窗中的所有图片上添加"WincyFu Design"水印
+  - 水印以45度角倾斜放置，透明度设置为15%
+  - 在图片的上中下的左中右9个位置添加水印，确保覆盖全图
+  - 使用专门的WatermarkOverlay组件实现水印效果
+  - 优化水印样式，确保在任何背景下都清晰可见
+  - 水印设计不干扰图片正常浏览
+- **提升设计作品保护性**
+  - 防止图片被直接盗用
+  - 保持图片原有的不可拖拽和右键菜单禁用功能
+  - 确保水印与图片加载状态同步
+
+### v1.0.4 弹窗样式与交互优化 (2025-07-02)
+
+- **优化项目详情弹窗布局与交互**
+  - 将弹窗宽度从95%增加到98%，最大宽度从1600px增加到1800px
+  - 改进弹窗内图片显示方式，采用上下布局（文字在上，图片在下）
+  - 优化图片大小和左右边距，确保与弹窗边缘保持一致的间距
+  - 通过增加图片容器高度至1050px，允许图片更大范围显示
+  - 调整图片之间的间距，通过-space-y-20创建更紧凑的浏览体验
+  - 移除最后一张图片的显示，更聚焦展示核心内容
+- **提升性能和用户体验**
+  - 移除不必要的图片加载进度指示器，简化界面
+  - 优化图片加载逻辑和错误处理
+  - 调整弹窗内容溢出处理，提升在不同屏幕尺寸下的适应性
+
+### v1.0.3 浅色主题适配优化版本 (2025-05-13)
+
+- **修复浅色主题下卡片样式问题**
+  - 修改SpotlightCard.css移除硬编码的背景色和边框色
+  - 更新SpotlightCard.tsx组件，确保根据isDarkTheme正确应用不同样式
+  - 优化globals.css中的卡片样式选择器，使用!important确保样式优先级
+  - 完善卡片在浅色模式下的视觉表现
+- **路径别名配置优化**
+  - 在tsconfig.json中添加paths配置，将@路径别名指向src目录
+  - 解决模块导入路径问题，确保ThemeContext可以被正确导入
+  - 优化项目构建过程，减少编译错误
+
+### v1.0.2 间距与视觉优化版本 (2025-05-20)
+
+- **优化作品集页面的"查看全部"按钮与联系部分之间的间距**
+  - 添加更大的底部边距(mb-40)，提供更清晰的视觉分隔
+  - 使"如您对我的作品感兴趣或有合作意向"模块更加醒目
+- **恢复各设计模块之间的原始间距**
+  - 将移动端设计、网站设计、大屏设计和其他设计模块的顶部间距恢复为mt-40
+  - 确保各模块有足够的视觉分离，提高页面整体可读性
+- **完善底部边距和模块间距的平衡**
+  - 优化整体页面的视觉流，使页面布局更加协调
+  - 保持内容模块的一致性和节奏感
+- **创建完整版本备份**
+  - 包括所有相关组件和样式文件
+  - 实现版本回退功能，可随时恢复到此版本状态
+
+### v1.0.1 交互细节优化版本 (2023-08-10)
+
+- **优化卡片视觉和交互效果**
   - 移除浅色模式下卡片悬停时的阴影效果，保留深色模式下的阴影
   - 降低卡片内容简介文字的不透明度至70%，提升层次感
   - 保持卡片移入动效和图片缩放效果
   - 优化深色/浅色模式切换时的视觉体验
-- 提升用户体验
+- **提升用户体验**
   - 改进卡片内文本的可读性
   - 增强信息层级，突出卡片标题
   - 保持卡片内容整体风格一致性
 
-### v1.0.0 卡片效果优化更新
+### v1.0.0 卡片效果优化与多语言支持版本 (2023-07-25)
 
-- 优化项目卡片的鼠标移入效果
+- **优化项目卡片的鼠标移入效果**
   - 使用SpotlightCard组件替换原有卡片容器
   - 添加与主站"关于我"部分卡片相同的光晕效果
   - 保持原有卡片滚动和交互功能不变
   - 优化深色/浅色模式下的卡片样式
-
-### v1.0.0 多语言支持完整版本
-
-- 完成作品集页面的多语言支持功能
+- **完成作品集页面的多语言支持功能**
   - 所有页面内容支持中英文双语切换
   - 修复DecryptedText组件在语言切换时的重置问题
   - 优化页面顶部三行文字在中英文切换时的显示效果
   - 完成各模块标题、描述以及项目卡片内容的翻译
   - 优化我的经历模块的中英文显示
-- 改进技术实现
+- **改进技术实现**
   - 使用getTranslatedText函数处理多语言文本
   - 优化DecryptedText组件对文本变化的响应
   - 确保所有静态文本和动态内容都支持语言切换
 
-### v0.0.9 社交媒体链接与文章链接优化版本
+### v0.0.9 社交媒体链接与文章链接优化版本 (2023-07-10)
 
-- 优化底部链接区域功能
+- **优化底部链接区域功能**
   - 更新"我的文章"链接，直接跳转到相应公众号文章
   - 优化社交媒体链接，点击跳转到对应平台
     - 小红书链接：https://www.xiaohongshu.com/user/profile/54e5db132e1d937e9a6902f7
@@ -83,125 +747,125 @@
     - 微博链接：https://m.weibo.cn/profile/1783924480
     - YouTube链接：https://www.youtube.com/@wincyfu7083
   - 保持底部页面结构不变，仅更新链接目标
-- 修复Next.js缓存相关问题
+- **修复Next.js缓存相关问题**
   - 创建fix-next-cache.sh脚本解决JSON解析错误
   - 修复all-designs布局文件中的providers导入问题
   - 优化项目构建过程，解决缓存相关错误
 
-### v0.0.8 UI优化与功能完善版本
+### v0.0.8 UI优化与功能完善版本 (2023-06-28)
 
-- 添加全部设计页面(/all-designs)，汇集所有类别的设计作品
+- **添加全部设计页面(/all-designs)**
   - 实现分类筛选功能，支持按设计类别过滤
   - 使用统一的卡片式布局展示所有作品
   - 添加返回作品集的导航链接
-- 优化"联系方式"弹窗布局
+- **优化"联系方式"弹窗布局**
   - 将关闭按钮移至右上角，提升用户体验
   - 改进弹窗交互和视觉样式
-- 改进"对我的作品感兴趣"模块
+- **改进"对我的作品感兴趣"模块**
   - 优化为横幅式布局，左侧文字右侧按钮
   - 采用特定的内边距和透明度来提升视觉效果
   - 更新文字内容，简化用户理解
-- 为所有设计类别添加"查看全部"按钮
+- **为所有设计类别添加"查看全部"按钮**
   - 统一按钮样式和位置
   - 实现左对齐设计，与整体布局保持一致
 
-### v0.0.7 卡片滚动逻辑优化版本
+### v0.0.7 卡片滚动逻辑优化版本 (2023-06-15)
 
-- 优化"移动端设计"模块卡片滚动功能
+- **优化"移动端设计"模块卡片滚动功能**
   - 将卡片宽度从600px调整为520px
   - 每次点击导航箭头只滚动一张卡片
   - 增加右侧内边距(padding-right: 400px)确保最后一张卡片完全显示
   - 为滚动添加平滑过渡效果(scroll-behavior: smooth)
-  - 为最后一组卡片("智能家居控制中心"、"语言学习助手"、"健康食谱规划")添加特殊处理
+  - 为最后一组卡片添加特殊处理
   - 当显示最后三张卡片时禁用右箭头，防止继续滚动
-- 确保用户体验一致性
+- **确保用户体验一致性**
   - 统一所有设计类别的滚动行为
   - 改进卡片可见性逻辑，确保当前卡片完全可见
   - 优化移动设备上的响应式显示
 
-### v0.0.6 卡片样式统一与内容优化版本
+### v0.0.6 卡片样式统一与内容优化版本 (2023-06-01)
 
-- 统一所有设计分类的卡片样式
+- **统一所有设计分类的卡片样式**
   - 为"网站设计"、"大屏设计"、"其他设计"模块添加与"移动端设计"相同的描述文本
   - 调整标题大小和间距保持一致，所有模块统一使用text-4xl sm:text-4xl大小
   - 将"其他设计"模块改为与"移动端设计"相同的卡片风格
   - 添加"品牌设计"和"平面设计"类别的项目，丰富"其他设计"模块内容
-- 修复移动端设计卡片滚动功能
+- **修复移动端设计卡片滚动功能**
   - 增加卡片宽度从370px到600px
   - 增加可见卡片数量从3个到4个
   - 优化滚动容器样式和功能
-- 完善项目数据结构
+- **完善项目数据结构**
   - 增加新的项目类别，如品牌设计、平面设计等
   - 丰富项目描述内容和详情
 
-### v0.0.5 样式一致性优化版本
+### v0.0.5 样式一致性优化版本 (2023-05-20)
 
-- 优化"个人经历"模块样式
+- **优化"个人经历"模块样式**
   - 将标签颜色与主站"文章教程"模块中"查看详情"按钮颜色保持一致 
   - 统一使用bg-primary/10 text-primary样式
   - 调整内边距和圆角样式为px-4 py-2 rounded
   - 调整标题文字大小为text-xl适配整体视觉效果
-- 增大头部区域文字尺寸
+- **增大头部区域文字尺寸**
   - 在移动设备上从text-4xl增大到text-5xl
   - 在平板设备上从sm:text-5xl增大到sm:text-6xl
   - 在桌面设备上从md:text-5xl增大到md:text-7xl
   - 增强页面首屏的视觉表现力和冲击力
 
-### v0.0.4 内容和布局优化版本
+### v0.0.4 内容和布局优化版本 (2023-05-10)
 
-- 更新"我的经历"模块内容
+- **更新"我的经历"模块内容**
   - 替换示例内容为真实工作经历内容
   - 优化时间地点显示格式
   - 调整文字排版与间距
   - 移除冗余的"查看所有活动"按钮
-- 优化视觉样式
+- **优化视觉样式**
   - 为"我的经历"模块添加#222222边框
   - 设置交替的底色(#171717和#121212)
   - 调整浅色模式下的灰色文字深度
   - 统一标签颜色(#26BF73)
-- 改进排版布局
+- **改进排版布局**
   - 优化文字与边框间的间距
   - 调整两列文本的布局和间距
   - 统一四个活动的布局样式和间距
-- 提升可读性
+- **提升可读性**
   - 调整浅色模式下的文字对比度
   - 减小文本块间距，提高信息密度
 
-### v0.0.3 样式统一优化版本
+### v0.0.3 样式统一优化版本 (2023-04-25)
 
-- 将背景色从默认改为#111111，保持深浅模式切换功能
-- 更新"我的经历"模块样式，使其与Webflow社区页面的Upcoming events风格一致
+- **将背景色从默认改为#111111，保持深浅模式切换功能**
+- **更新"我的经历"模块样式**
   - 添加圆角
   - 增加到4行内容
   - 设置交替行背景色
   - 将表头移到卡片外部
   - 调整浅色模式下的间隔线颜色
-- 优化"对我的作品感兴趣？"模块
+- **优化"对我的作品感兴趣？"模块**
   - 调整浅色模式下的背景色
   - 扩大联系方式弹窗
   - 更新微信二维码图片路径
   - 添加两个邮箱地址选项
-- 统一字体和字号
+- **统一字体和字号**
   - 使用'PingFang SC', sans-serif字体用于标题
   - 调整文本大小与主站一致
   - 增加响应式字体设置
-- 添加头部区域文字解密动画效果
+- **添加头部区域文字解密动画效果**
   - 使用framer-motion实现文字解密过渡效果
   - 在页面标题和介绍文字上应用视图触发的解密动画
   - 为页面首次加载提供视觉吸引力
 
-### v0.0.2 功能优化版本
+### v0.0.2 功能优化版本 (2023-04-10)
 
-- 实现返回主站后导航栏中显示作品集链接功能
-- 设置作品集链接位于导航栏首页链接之后
-- 添加本地存储功能，保存用户访问状态
-- 优化用户体验，只对访问过作品集的用户显示导航链接
+- **实现返回主站后导航栏中显示作品集链接功能**
+- **设置作品集链接位于导航栏首页链接之后**
+- **添加本地存储功能，保存用户访问状态**
+- **优化用户体验，只对访问过作品集的用户显示导航链接**
 
-### v0.0.1 初始版本
+### v0.0.1 初始版本 (2023-03-28)
 
-- 创建基本作品集布局
-- 添加项目卡片展示
-- 实现类别筛选功能
+- **创建基本作品集布局**
+- **添加项目卡片展示**
+- **实现类别筛选功能**
 
 ## 技术实现
 
@@ -215,6 +879,276 @@
 - 采用 IntersectionObserver API 监测元素可见性触发动画
 - 使用useLanguage上下文和getTranslatedText函数实现多语言切换
 
+## 开发说明
+
+1. 在开发环境中，通过 `npm run dev` 启动服务
+2. 访问 http://localhost:3000/portfolio-x7y9z 查看页面
+3. 修改 `src/data/portfolio.ts` 可更新项目数据
+4. 多语言翻译文件位于 `src/utils/translations.ts`
+
+## 版本管理与回退
+
+所有版本备份存放在 `/版本备份/` 目录下，命名格式为 `portfolio-x7y9z-v版本号`。
+
+如需备份当前版本，执行以下命令：
+
+```bash
+# 创建All-Designs页面v1.2.0版本备份
+mkdir -p 版本备份/all-designs-page-v1.2.0
+cp src/app/all-designs/page.tsx 版本备份/all-designs-page-v1.2.0/
+cp src/app/all-designs/SpotlightCard.tsx 版本备份/all-designs-page-v1.2.0/
+cp src/app/all-designs/SpotlightCard.css 版本备份/all-designs-page-v1.2.0/
+
+# 创建All-Designs页面v1.1.3版本备份
+mkdir -p 版本备份/all-designs-page-v1.1.3
+cp src/app/all-designs/page.tsx 版本备份/all-designs-page-v1.1.3/
+cp src/components/UI/ProjectDetailModal.tsx 版本备份/all-designs-page-v1.1.3/
+cp src/components/UI/SpotlightCard.* 版本备份/all-designs-page-v1.1.3/
+cp src/contexts/ProjectViewContext.tsx 版本备份/all-designs-page-v1.1.3/
+
+# 创建All-Designs页面v1.1.2版本备份
+mkdir -p 版本备份/all-designs-page-v1.1.2
+cp src/app/all-designs/page.tsx 版本备份/all-designs-page-v1.1.2/
+cp src/components/UI/ProjectDetailModal.tsx 版本备份/all-designs-page-v1.1.2/
+cp src/components/UI/SpotlightCard.* 版本备份/all-designs-page-v1.1.2/
+cp src/contexts/ProjectViewContext.tsx 版本备份/all-designs-page-v1.1.2/
+
+# 创建作品集页面v1.2.0版本备份
+mkdir -p 版本备份/portfolio-x7y9z-v1.2.0
+cp -R src/app/portfolio-x7y9z/* 版本备份/portfolio-x7y9z-v1.2.0/
+cp src/components/UI/ProjectDetailModal.tsx 版本备份/portfolio-x7y9z-v1.2.0/
+cp src/components/UI/WatermarkOverlay.tsx 版本备份/portfolio-x7y9z-v1.2.0/
+cp src/components/UI/SpotlightCard.* 版本备份/portfolio-x7y9z-v1.2.0/
+cp src/app/globals.css 版本备份/portfolio-x7y9z-v1.2.0/
+cp src/data/portfolio.ts 版本备份/portfolio-x7y9z-v1.2.0/
+cp src/utils/translations.ts 版本备份/portfolio-x7y9z-v1.2.0/
+cp src/components/Footer/Footer.tsx 版本备份/portfolio-x7y9z-v1.2.0/
+cp src/app/layout.tsx 版本备份/portfolio-x7y9z-v1.2.0/
+cp src/contexts/ProjectViewContext.tsx 版本备份/portfolio-x7y9z-v1.2.0/
+
+# 创建作品集页面v1.1.12版本备份
+mkdir -p 版本备份/portfolio-x7y9z-v1.1.12
+cp -R src/app/portfolio-x7y9z/* 版本备份/portfolio-x7y9z-v1.1.12/
+cp src/components/UI/ProjectDetailModal.tsx 版本备份/portfolio-x7y9z-v1.1.12/
+cp src/components/UI/WatermarkOverlay.tsx 版本备份/portfolio-x7y9z-v1.1.12/
+cp src/components/UI/SpotlightCard.* 版本备份/portfolio-x7y9z-v1.1.12/
+cp src/app/globals.css 版本备份/portfolio-x7y9z-v1.1.12/
+cp src/data/portfolio.ts 版本备份/portfolio-x7y9z-v1.1.12/
+cp src/utils/translations.ts 版本备份/portfolio-x7y9z-v1.1.12/
+cp src/components/Footer/Footer.tsx 版本备份/portfolio-x7y9z-v1.1.12/
+cp src/app/layout.tsx 版本备份/portfolio-x7y9z-v1.1.12/
+cp src/contexts/ProjectViewContext.tsx 版本备份/portfolio-x7y9z-v1.1.12/
+```
+
+如需回退到历史版本，执行以下命令：
+
+```bash
+# 回退All-Designs页面到v1.2.0版本
+cp 版本备份/all-designs-page-v1.2.0/page.tsx src/app/all-designs/
+cp 版本备份/all-designs-page-v1.2.0/SpotlightCard.tsx src/app/all-designs/
+cp 版本备份/all-designs-page-v1.2.0/SpotlightCard.css src/app/all-designs/
+
+# 回退All-Designs页面到v1.1.3版本
+cp 版本备份/all-designs-page-v1.1.3/page.tsx src/app/all-designs/
+cp 版本备份/all-designs-page-v1.1.3/ProjectDetailModal.tsx src/components/UI/
+cp 版本备份/all-designs-page-v1.1.3/SpotlightCard.* src/components/UI/
+cp 版本备份/all-designs-page-v1.1.3/ProjectViewContext.tsx src/contexts/
+
+# 回退All-Designs页面到v1.1.2版本
+cp 版本备份/all-designs-page-v1.1.2/page.tsx src/app/all-designs/
+cp 版本备份/all-designs-page-v1.1.2/ProjectDetailModal.tsx src/components/UI/
+cp 版本备份/all-designs-page-v1.1.2/SpotlightCard.* src/components/UI/
+cp 版本备份/all-designs-page-v1.1.2/ProjectViewContext.tsx src/contexts/
+
+# 回退All-Designs页面到v1.1.1版本
+cp 版本备份/all-designs-page-v1.1.1/page.tsx src/app/all-designs/
+cp 版本备份/all-designs-page-v1.1.1/ProjectDetailModal.tsx src/components/UI/
+cp 版本备份/all-designs-page-v1.1.1/SpotlightCard.* src/components/UI/
+cp 版本备份/all-designs-page-v1.1.1/ProjectViewContext.tsx src/contexts/
+
+# 回退All-Designs页面到v1.1.0版本
+cp 版本备份/all-designs-page-v1.1.0/page.tsx src/app/all-designs/
+cp 版本备份/all-designs-page-v1.1.0/ProjectDetailModal.tsx src/components/UI/
+cp 版本备份/all-designs-page-v1.1.0/SpotlightCard.* src/components/UI/
+
+# 回退作品集页面到v1.2.0版本
+cp -R 版本备份/portfolio-x7y9z-v1.2.0/page.tsx src/app/portfolio-x7y9z/
+cp -R 版本备份/portfolio-x7y9z-v1.2.0/README.md src/app/portfolio-x7y9z/
+cp 版本备份/portfolio-x7y9z-v1.2.0/ProjectDetailModal.tsx src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.2.0/WatermarkOverlay.tsx src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.2.0/SpotlightCard.* src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.2.0/globals.css src/app/
+cp 版本备份/portfolio-x7y9z-v1.2.0/portfolio.ts src/data/
+cp 版本备份/portfolio-x7y9z-v1.2.0/translations.ts src/utils/
+cp 版本备份/portfolio-x7y9z-v1.2.0/Footer.tsx src/components/Footer/
+cp 版本备份/portfolio-x7y9z-v1.2.0/layout.tsx src/app/
+cp 版本备份/portfolio-x7y9z-v1.2.0/ProjectViewContext.tsx src/contexts/
+
+# 回退作品集页面到v1.1.12版本
+cp -R 版本备份/portfolio-x7y9z-v1.1.12/page.tsx src/app/portfolio-x7y9z/
+cp -R 版本备份/portfolio-x7y9z-v1.1.12/README.md src/app/portfolio-x7y9z/
+cp 版本备份/portfolio-x7y9z-v1.1.12/ProjectDetailModal.tsx src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.12/WatermarkOverlay.tsx src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.12/SpotlightCard.* src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.12/globals.css src/app/
+cp 版本备份/portfolio-x7y9z-v1.1.12/portfolio.ts src/data/
+cp 版本备份/portfolio-x7y9z-v1.1.12/translations.ts src/utils/
+cp 版本备份/portfolio-x7y9z-v1.1.12/Footer.tsx src/components/Footer/
+cp 版本备份/portfolio-x7y9z-v1.1.12/layout.tsx src/app/
+cp 版本备份/portfolio-x7y9z-v1.1.12/ProjectViewContext.tsx src/contexts/
+
+# 回退到v1.1.11版本
+cp -R 版本备份/portfolio-x7y9z-v1.1.11/page.tsx src/app/portfolio-x7y9z/
+cp -R 版本备份/portfolio-x7y9z-v1.1.11/README.md src/app/portfolio-x7y9z/
+cp 版本备份/portfolio-x7y9z-v1.1.11/ProjectDetailModal.tsx src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.11/WatermarkOverlay.tsx src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.11/SpotlightCard.* src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.11/globals.css src/app/
+cp 版本备份/portfolio-x7y9z-v1.1.11/portfolio.ts src/data/
+cp 版本备份/portfolio-x7y9z-v1.1.11/translations.ts src/utils/
+cp 版本备份/portfolio-x7y9z-v1.1.11/Footer.tsx src/components/Footer/
+cp 版本备份/portfolio-x7y9z-v1.1.11/layout.tsx src/app/
+cp 版本备份/portfolio-x7y9z-v1.1.11/ProjectViewContext.tsx src/contexts/
+
+# 回退到v1.1.10版本
+cp -R 版本备份/portfolio-x7y9z-v1.1.10/page.tsx src/app/portfolio-x7y9z/
+cp -R 版本备份/portfolio-x7y9z-v1.1.10/README.md src/app/portfolio-x7y9z/
+cp 版本备份/portfolio-x7y9z-v1.1.10/ProjectDetailModal.tsx src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.10/WatermarkOverlay.tsx src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.10/SpotlightCard.* src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.10/globals.css src/app/
+cp 版本备份/portfolio-x7y9z-v1.1.10/portfolio.ts src/data/
+cp 版本备份/portfolio-x7y9z-v1.1.10/translations.ts src/utils/
+cp 版本备份/portfolio-x7y9z-v1.1.10/Footer.tsx src/components/Footer/
+cp 版本备份/portfolio-x7y9z-v1.1.10/layout.tsx src/app/
+cp 版本备份/portfolio-x7y9z-v1.1.10/ProjectViewContext.tsx src/contexts/
+
+# 回退到v1.1.9版本
+cp -R 版本备份/portfolio-x7y9z-v1.1.9/page.tsx src/app/portfolio-x7y9z/
+cp -R 版本备份/portfolio-x7y9z-v1.1.9/README.md src/app/portfolio-x7y9z/
+cp 版本备份/portfolio-x7y9z-v1.1.9/ProjectDetailModal.tsx src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.9/WatermarkOverlay.tsx src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.9/SpotlightCard.* src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.9/globals.css src/app/
+cp 版本备份/portfolio-x7y9z-v1.1.9/portfolio.ts src/data/
+cp 版本备份/portfolio-x7y9z-v1.1.9/translations.ts src/utils/
+cp 版本备份/portfolio-x7y9z-v1.1.9/Footer.tsx src/components/Footer/
+cp 版本备份/portfolio-x7y9z-v1.1.9/layout.tsx src/app/
+cp 版本备份/portfolio-x7y9z-v1.1.9/ProjectViewContext.tsx src/contexts/
+
+# 回退到v1.1.8版本
+cp -R 版本备份/portfolio-x7y9z-v1.1.8/page.tsx src/app/portfolio-x7y9z/
+cp -R 版本备份/portfolio-x7y9z-v1.1.8/README.md src/app/portfolio-x7y9z/
+cp 版本备份/portfolio-x7y9z-v1.1.8/ProjectDetailModal.tsx src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.8/WatermarkOverlay.tsx src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.8/SpotlightCard.* src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.8/globals.css src/app/
+cp 版本备份/portfolio-x7y9z-v1.1.8/portfolio.ts src/data/
+cp 版本备份/portfolio-x7y9z-v1.1.8/translations.ts src/utils/
+cp 版本备份/portfolio-x7y9z-v1.1.8/Footer.tsx src/components/Footer/
+cp 版本备份/portfolio-x7y9z-v1.1.8/layout.tsx src/app/
+cp 版本备份/portfolio-x7y9z-v1.1.8/ProjectViewContext.tsx src/contexts/
+
+# 回退到v1.1.7版本
+cp -R 版本备份/portfolio-x7y9z-v1.1.7/page.tsx src/app/portfolio-x7y9z/
+cp -R 版本备份/portfolio-x7y9z-v1.1.7/README.md src/app/portfolio-x7y9z/
+cp 版本备份/portfolio-x7y9z-v1.1.7/ProjectDetailModal.tsx src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.7/WatermarkOverlay.tsx src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.7/SpotlightCard.* src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.7/globals.css src/app/
+cp 版本备份/portfolio-x7y9z-v1.1.7/portfolio.ts src/data/
+cp 版本备份/portfolio-x7y9z-v1.1.7/translations.ts src/utils/
+cp 版本备份/portfolio-x7y9z-v1.1.7/Footer.tsx src/components/Footer/
+cp 版本备份/portfolio-x7y9z-v1.1.7/layout.tsx src/app/
+cp 版本备份/portfolio-x7y9z-v1.1.7/ProjectViewContext.tsx src/contexts/
+
+# 回退到v1.1.6版本
+cp -R 版本备份/portfolio-x7y9z-v1.1.6/page.tsx src/app/portfolio-x7y9z/
+cp -R 版本备份/portfolio-x7y9z-v1.1.6/README.md src/app/portfolio-x7y9z/
+cp 版本备份/portfolio-x7y9z-v1.1.6/ProjectDetailModal.tsx src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.6/WatermarkOverlay.tsx src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.6/SpotlightCard.* src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.6/globals.css src/app/
+cp 版本备份/portfolio-x7y9z-v1.1.6/portfolio.ts src/data/
+cp 版本备份/portfolio-x7y9z-v1.1.6/translations.ts src/utils/
+cp 版本备份/portfolio-x7y9z-v1.1.6/Footer.tsx src/components/Footer/
+cp 版本备份/portfolio-x7y9z-v1.1.6/layout.tsx src/app/
+cp 版本备份/portfolio-x7y9z-v1.1.6/ProjectViewContext.tsx src/contexts/
+
+# 回退到v1.1.5版本
+cp -R 版本备份/portfolio-x7y9z-v1.1.5/page.tsx src/app/portfolio-x7y9z/
+cp -R 版本备份/portfolio-x7y9z-v1.1.5/README.md src/app/portfolio-x7y9z/
+cp 版本备份/portfolio-x7y9z-v1.1.5/ProjectDetailModal.tsx src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.5/WatermarkOverlay.tsx src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.5/SpotlightCard.* src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.5/globals.css src/app/
+cp 版本备份/portfolio-x7y9z-v1.1.5/portfolio.ts src/data/
+cp 版本备份/portfolio-x7y9z-v1.1.5/translations.ts src/utils/
+cp 版本备份/portfolio-x7y9z-v1.1.5/Footer.tsx src/components/Footer/
+cp 版本备份/portfolio-x7y9z-v1.1.5/layout.tsx src/app/
+cp 版本备份/portfolio-x7y9z-v1.1.5/ProjectViewContext.tsx src/contexts/
+
+# 回退到v1.1.4版本
+cp -R 版本备份/portfolio-x7y9z-v1.1.4/page.tsx src/app/portfolio-x7y9z/
+cp -R 版本备份/portfolio-x7y9z-v1.1.4/README.md src/app/portfolio-x7y9z/
+cp 版本备份/portfolio-x7y9z-v1.1.4/ProjectDetailModal.tsx src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.4/WatermarkOverlay.tsx src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.4/SpotlightCard.* src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.4/globals.css src/app/
+cp 版本备份/portfolio-x7y9z-v1.1.4/portfolio.ts src/data/
+cp 版本备份/portfolio-x7y9z-v1.1.4/translations.ts src/utils/
+cp 版本备份/portfolio-x7y9z-v1.1.4/Footer.tsx src/components/Footer/
+cp 版本备份/portfolio-x7y9z-v1.1.4/layout.tsx src/app/
+cp 版本备份/portfolio-x7y9z-v1.1.4/ProjectViewContext.tsx src/contexts/
+
+# 回退到v1.1.3版本
+cp -R 版本备份/portfolio-x7y9z-v1.1.3/* src/app/portfolio-x7y9z/
+cp 版本备份/portfolio-x7y9z-v1.1.3/ProjectDetailModal.tsx src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.3/WatermarkOverlay.tsx src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.3/SpotlightCard.* src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.3/globals.css src/app/
+cp 版本备份/portfolio-x7y9z-v1.1.3/portfolio.ts src/data/
+cp 版本备份/portfolio-x7y9z-v1.1.3/translations.ts src/utils/
+cp 版本备份/portfolio-x7y9z-v1.1.3/Footer.tsx src/components/Footer/
+
+# 回退到v1.1.2版本
+cp -R 版本备份/portfolio-x7y9z-v1.1.2/* src/app/portfolio-x7y9z/
+cp 版本备份/portfolio-x7y9z-v1.1.2/ProjectDetailModal.tsx src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.2/WatermarkOverlay.tsx src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.2/SpotlightCard.* src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.2/globals.css src/app/
+cp 版本备份/portfolio-x7y9z-v1.1.2/portfolio.ts src/data/
+cp 版本备份/portfolio-x7y9z-v1.1.2/translations.ts src/utils/
+cp 版本备份/portfolio-x7y9z-v1.1.2/Footer.tsx src/components/Footer/
+
+# 回退到v1.1.1版本
+cp -R 版本备份/portfolio-x7y9z-v1.1.1/* src/app/portfolio-x7y9z/
+cp 版本备份/portfolio-x7y9z-v1.1.1/ProjectDetailModal.tsx src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.1/WatermarkOverlay.tsx src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.1/SpotlightCard.* src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.1/globals.css src/app/
+cp 版本备份/portfolio-x7y9z-v1.1.1/portfolio.ts src/data/
+cp 版本备份/portfolio-x7y9z-v1.1.1/translations.ts src/utils/
+cp 版本备份/portfolio-x7y9z-v1.1.1/Footer.tsx src/components/Footer/
+
+# 回退到v1.1.0版本
+cp -R 版本备份/portfolio-x7y9z-v1.1.0/* src/app/portfolio-x7y9z/
+cp 版本备份/portfolio-x7y9z-v1.1.0/ProjectDetailModal.tsx src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.0/WatermarkOverlay.tsx src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.0/SpotlightCard.* src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.0/globals.css src/app/
+cp 版本备份/portfolio-x7y9z-v1.1.0/portfolio.ts src/data/
+cp 版本备份/portfolio-x7y9z-v1.1.0/translations.ts src/utils/
+
+# 回退到特定版本（以v1.0.9为例）
+cp -R 版本备份/portfolio-x7y9z-v1.0.9/* src/app/portfolio-x7y9z/
+cp 版本备份/portfolio-x7y9z-v1.0.9/ProjectDetailModal.tsx src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.0.9/WatermarkOverlay.tsx src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.0.9/SpotlightCard.* src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.0.9/globals.css src/app/
+cp 版本备份/portfolio-x7y9z-v1.0.9/portfolio.ts src/data/
+```
+
 ## 待优化项
 
 - 添加更多作品集项目详情
@@ -222,30 +1156,6 @@
 - 考虑添加筛选标签功能
 - 可考虑添加作品详情页动画过渡效果
 - 优化多语言切换的性能和用户体验
-
-## 使用说明
-
-1. 在开发环境中，通过 `npm run dev` 启动服务
-2. 访问 http://localhost:3000/portfolio-x7y9z 查看页面
-3. 修改 `src/data/portfolio.ts` 可更新项目数据
-4. 页面组件位于 `src/app/portfolio-x7y9z/page.tsx`
-5. 多语言翻译文件位于 `src/utils/translations.ts`
-
-## 版本回退
-
-当前v1.0.1版本的所有内容已备份，如需回退到此版本，请参考以下步骤：
-1. 在代码仓库中查找标记为"portfolio-v1.0.1"的提交
-2. 使用git checkout或版本控制工具回退到该版本
-3. 版本备份路径: `/版本备份/portfolio-x7y9z-v1.0.1/`
-
-您也可以回退到之前的版本:
-- v1.0.0版本备份路径: `/版本备份/portfolio-x7y9z-v1.0.0/`
-- v0.0.9版本备份路径: `/版本备份/portfolio-x7y9z-v0.0.9/`
-- v0.0.8版本备份路径: `/版本备份/portfolio-x7y9z-v0.0.8/`
-- v0.0.7版本备份路径: `/版本备份/portfolio-x7y9z-v0.0.7/`
-- v0.0.6版本备份路径: `/版本备份/portfolio-x7y9z-v0.0.6/`
-- v0.0.5版本备份路径: `/版本备份/portfolio-x7y9z-v0.0.5/`
-- v0.0.4版本备份路径: `/版本备份/portfolio-x7y9z-v0.0.4/`
 
 ## 注意事项
 

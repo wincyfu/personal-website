@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>清理作品集浏览记录</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+      text-align: center;
+      line-height: 1.6;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+    }
+    .status {
+      margin-top: 20px;
+      padding: 10px;
+      border-radius: 4px;
+    }
+    .status.success {
+      background-color: #e7f7e7;
+      color: #2e7d32;
+    }
+    .status.info {
+      background-color: #e3f2fd;
+      color: #0d47a1;
+    }
+  </style>
+</head>
+<body>
+  <h1>清理作品集浏览记录</h1>
+  <button onclick="clearViewCounts()">清理所有浏览记录</button>
+  <button onclick="resetToDefault()">重置所有项目浏览数为2000</button>
+  <div id="result"></div>
+
+  <script>
+    function clearViewCounts() {
+      localStorage.removeItem('projectViewCounts');
+      document.getElementById('result').innerHTML = '<p style="color: green;">浏览记录已清理</p>';
+    }
+
+    function resetToDefault() {
+      // 获取所有项目ID并重置为2000
+      const defaultCounts = {
+        'project-1': 2000,
+        'project-2': 2000,
+        'project-3': 2000,
+        'project-4': 2000,
+        'project-5': 2000,
+        'project-6': 2000,
+        'project-7': 2000,
+        'project-8': 2000,
+        'project-9': 2000,
+        'project-10': 2000,
+        'project-11': 2000,
+        'project-12': 2000,
+        'project-13': 2000,
+        'project-14': 2000,
+        'project-15': 2000
+      };
+      localStorage.setItem('projectViewCounts', JSON.stringify(defaultCounts));
+      document.getElementById('result').innerHTML = '<p style="color: blue;">所有项目浏览数已重置为2000</p>';
+    }
+
+    // 显示当前存储的数据
+    function showCurrentData() {
+      const data = localStorage.getItem('projectViewCounts');
+      if (data) {
+        const parsed = JSON.parse(data);
+        let html = '<h3>当前浏览记录：</h3><ul>';
+        for (const [key, value] of Object.entries(parsed)) {
+          html += `<li>${key}: ${value}</li>`;
+        }
+        html += '</ul>';
+        document.getElementById('result').innerHTML = html;
+      } else {
+        document.getElementById('result').innerHTML = '<p>没有找到浏览记录</p>';
+      }
+    }
+
+    // 页面加载时显示当前数据
+    window.onload = showCurrentData;
+  </script>
+</body>
+</html> 

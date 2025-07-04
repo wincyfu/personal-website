@@ -84,7 +84,7 @@ const LocalTutorialCard = ({ article }: LocalTutorialCardProps) => {
           <h3 className={`font-semibold text-xl mb-2 line-clamp-2 ${isDarkTheme ? 'text-white' : 'text-gray-800'}`}>
             {article.title}
           </h3>
-          <p className={`${isDarkTheme ? 'text-gray-300' : 'text-gray-600'} text-base line-clamp-2 mb-8`}>
+          <p className={`${isDarkTheme ? 'text-gray-300' : 'text-gray-600'} text-sm line-clamp-2 mb-8`}>
             {article.excerpt}
           </p>
           <div className="mt-auto">

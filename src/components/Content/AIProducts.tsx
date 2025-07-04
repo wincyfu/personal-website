@@ -126,8 +126,8 @@ const AIProducts = () => {
                   spotlightColor={card.color}
                   enableTilt={true}
                 >
-                  <div className="flex flex-col h-full p-6 md:p-1">
-                    <div className={`h-[220px] rounded-lg mb-8 overflow-hidden mx-[-10px] mt-[-10px] ${isDarkTheme ? 'bg-gray-800/30' : 'bg-gray-100/70'}`}>
+                  <div className="flex flex-col h-full">
+                    <div className={`h-[220px] rounded-lg mb-8 overflow-hidden ${isDarkTheme ? 'bg-gray-800/30' : 'bg-gray-100/70'}`}>
                       {/* Image placeholder - replace with actual images when available */}
                       <div className="w-full h-full flex items-center justify-center">
                         {card.image ? (
@@ -140,7 +140,7 @@ const AIProducts = () => {
                       </div>
                     </div>
                     <h3 className={`text-xl md:text-2xl font-bold mb-4 ${isDarkTheme ? 'text-white' : 'text-dark'}`}>{card.title}</h3>
-                    <p className={`text-base md:text-lg mb-6 ${isDarkTheme ? 'text-white/80' : 'text-dark/80'}`}>{card.subtitle}</p>
+                    <p className={`text-base mb-6 ${isDarkTheme ? 'text-white/80' : 'text-dark/80'}`}>{card.subtitle}</p>
                     <div className="mt-auto">
                       <Link 
                         href={`${card.link}?from=home`}

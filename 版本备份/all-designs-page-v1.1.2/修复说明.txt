@@ -1,0 +1,62 @@
+All-Designs页面优化版本v1.1.2 (2025-01-25)
+
+修复内容：
+
+1. **卡片间距进一步优化**
+   - 问题描述：卡片中上下左右间距仍然过大（32px）
+   - 修复方案：将padding从p-5（20px）调整为p-4（16px）
+   - 效果：卡片内容布局更加紧凑，视觉效果更佳
+
+2. **项目浏览次数个性化**
+   - 问题描述：所有项目都显示相同的2000基础浏览量，不够真实
+   - 修复方案：为每个项目设置不同的初始浏览量
+   - 具体设置：
+     - 好旅程项目：2347次
+     - AI健康助手：2156次
+     - ECOGO环保回收项目：2089次
+     - 儿宝管家项目：2234次
+     - 近视无忧项目：2067次
+     - 锦礼商城项目：2178次
+     - VAV交友：2123次
+     - 速速修项目：2098次
+     - 幼儿园管理系统：2145次
+     - 官网设计合集：2134次
+     - 项目管理大屏：2112次
+     - 运维管理大屏：2087次
+     - 大屏设计合集：2076次
+     - LOGO设计-知之教育：2165次
+     - IP设计合集：2143次
+     - 组件库建立：2128次
+   - 效果：每个项目显示不同的浏览量，增加真实性
+
+3. **浏览计数逻辑保持不变**
+   - 确保每次打开弹窗时正确增加浏览次数
+   - 保持localStorage持久化存储功能
+   - 维护现有的计数增长逻辑
+
+技术实现：
+- 修改src/app/all-designs/page.tsx中的卡片padding样式
+- 修改src/components/UI/SpotlightCard.css中的padding从2rem改为0
+- 修改src/contexts/ProjectViewContext.tsx中的浏览次数逻辑
+- 添加getInitialViewCount函数，为每个项目设置个性化初始浏览量
+- 更新incrementViewCount和getViewCount函数使用新的初始值
+- 添加版本控制机制，自动清除旧的localStorage数据
+
+功能验证：
+- ✅ 卡片内容间距调整为16px，布局更加紧凑
+- ✅ 每个项目显示不同的初始浏览量
+- ✅ 浏览次数增长逻辑正常工作
+- ✅ 数据持久化存储功能正常
+- ✅ 从all-designs页面和作品集页面访问弹窗行为一致
+
+文件修改清单：
+- src/app/all-designs/page.tsx：调整卡片padding
+- src/components/UI/SpotlightCard.css：移除默认padding
+- src/contexts/ProjectViewContext.tsx：添加个性化浏览次数逻辑和版本控制
+
+回退指令：
+```bash
+# 回退到v1.1.1版本
+cp 版本备份/all-designs-page-v1.1.1/page.tsx src/app/all-designs/
+cp 版本备份/all-designs-page-v1.1.1/ProjectViewContext.tsx src/contexts/
+``` 

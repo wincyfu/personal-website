@@ -1,0 +1,40 @@
+# 版本备份信息
+
+版本: v1.1.4 (浏览计数功能版本)
+日期: 2025-06-27
+状态: 完整备份，包含所有相关文件
+
+## 主要功能
+- 作品集弹窗浏览计数功能
+- 每次打开弹窗增加浏览次数
+- 浏览次数从2000开始计数
+- 数据持久化存储在localStorage
+
+## 包含文件
+- 作品集页面主要文件 (src/app/portfolio-x7y9z/*)
+- 项目详情弹窗组件 (ProjectDetailModal.tsx)
+- 浏览计数上下文 (ProjectViewContext.tsx)
+- 水印覆盖组件 (WatermarkOverlay.tsx)
+- 聚光灯卡片组件 (SpotlightCard.*)
+- 全局样式文件 (globals.css)
+- 作品集数据文件 (portfolio.ts)
+- 翻译文件 (translations.ts)
+- 页脚组件 (Footer.tsx)
+- 布局文件 (layout.tsx)
+
+## 回退命令
+```bash
+# 回退到v1.1.4版本
+cp -R 版本备份/portfolio-x7y9z-v1.1.4/page.tsx src/app/portfolio-x7y9z/
+cp -R 版本备份/portfolio-x7y9z-v1.1.4/README.md src/app/portfolio-x7y9z/
+cp 版本备份/portfolio-x7y9z-v1.1.4/ProjectDetailModal.tsx src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.4/WatermarkOverlay.tsx src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.4/SpotlightCard.* src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.4/globals.css src/app/
+cp 版本备份/portfolio-x7y9z-v1.1.4/portfolio.ts src/data/
+cp 版本备份/portfolio-x7y9z-v1.1.4/translations.ts src/utils/
+cp 版本备份/portfolio-x7y9z-v1.1.4/Footer.tsx src/components/Footer/
+cp 版本备份/portfolio-x7y9z-v1.1.4/layout.tsx src/app/
+cp 版本备份/portfolio-x7y9z-v1.1.4/ProjectViewContext.tsx src/contexts/
+```
+

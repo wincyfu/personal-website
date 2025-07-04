@@ -1,0 +1,42 @@
+版本：v1.1.10
+日期：2025-01-16
+状态：项目顺序调整稳定版本
+
+### 版本更新内容
+- 将"近视无忧项目"从第8位移动到第5位（儿保管家项目后面）
+- 相应调整其他项目的顺序和ID映射：
+  - 近视无忧项目：project-5 (2024.06-2024.08)
+  - 锦礼商城项目：project-6 (2020.04-2020.05) ← 原project-5顺延
+  - VAV交友：project-7 (2020.12-2021.02) ← 原project-6顺延
+  - 速速修项目：project-8 (2022.02-2022.03) ← 原project-7顺延
+- 同时更新了数据文件和页面文件中的项目时间硬编码部分
+- 确保数据一致性和显示正确性
+
+### 包含文件
+- page.tsx (作品集主页面)
+- README.md (文档)
+- ProjectDetailModal.tsx (项目详情弹窗组件)
+- WatermarkOverlay.tsx (水印组件)
+- SpotlightCard.tsx/css (光晕卡片组件)
+- globals.css (全局样式)
+- portfolio.ts (项目数据)
+- translations.ts (翻译文件)
+- Footer.tsx (底部组件)
+- layout.tsx (布局文件)
+- ProjectViewContext.tsx (浏览计数上下文)
+
+### 回退命令
+```bash
+# 回退到v1.1.10版本
+cp -R 版本备份/portfolio-x7y9z-v1.1.10/page.tsx src/app/portfolio-x7y9z/
+cp -R 版本备份/portfolio-x7y9z-v1.1.10/README.md src/app/portfolio-x7y9z/
+cp 版本备份/portfolio-x7y9z-v1.1.10/ProjectDetailModal.tsx src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.10/WatermarkOverlay.tsx src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.10/SpotlightCard.* src/components/UI/
+cp 版本备份/portfolio-x7y9z-v1.1.10/globals.css src/app/
+cp 版本备份/portfolio-x7y9z-v1.1.10/portfolio.ts src/data/
+cp 版本备份/portfolio-x7y9z-v1.1.10/translations.ts src/utils/
+cp 版本备份/portfolio-x7y9z-v1.1.10/Footer.tsx src/components/Footer/
+cp 版本备份/portfolio-x7y9z-v1.1.10/layout.tsx src/app/
+cp 版本备份/portfolio-x7y9z-v1.1.10/ProjectViewContext.tsx src/contexts/
+``` 

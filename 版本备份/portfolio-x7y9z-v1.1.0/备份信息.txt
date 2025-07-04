@@ -1,0 +1,43 @@
+# 版本备份信息
+
+版本: v1.1.0
+日期: 2025-06-25
+描述: 卡片尺寸优化与经历布局调整版本
+
+## 主要更新内容:
+1. 作品集卡片尺寸优化
+   - 卡片宽度从520px调整为380px
+   - 图片高度从240px调整为180px
+   - 内边距从26px调整为20px
+   - 显示方式调整为3个完整卡片+第4个卡片露出1/3
+
+2. 卡片内容样式调整
+   - 标题字体从30px调整为24px
+   - 标签字体从14px调整为12px
+   - 描述文字从16px调整为14px
+   - 时间文字从12px调整为11px
+
+3. 我的经历模块布局优化
+   - 公司名和职位左边距从32px调整为20px
+   - 保持其他内容不变
+
+## 备份文件列表:
+- page.tsx (主页面文件)
+- README.md (文档文件)
+- ProjectDetailModal.tsx (项目详情弹窗组件)
+- WatermarkOverlay.tsx (水印覆盖组件)
+- SpotlightCard.tsx/.css (聚光灯卡片组件)
+- globals.css (全局样式文件)
+- portfolio.ts (作品集数据)
+- translations.ts (翻译文件)
+
+## 回退命令:
+如需回退到此版本，请执行:
+cp -R "版本备份/portfolio-x7y9z-v1.1.0/"* src/app/portfolio-x7y9z/
+cp "版本备份/portfolio-x7y9z-v1.1.0/ProjectDetailModal.tsx" src/components/UI/
+cp "版本备份/portfolio-x7y9z-v1.1.0/WatermarkOverlay.tsx" src/components/UI/
+cp "版本备份/portfolio-x7y9z-v1.1.0/SpotlightCard.*" src/components/UI/
+cp "版本备份/portfolio-x7y9z-v1.1.0/globals.css" src/app/
+cp "版本备份/portfolio-x7y9z-v1.1.0/portfolio.ts" src/data/
+cp "版本备份/portfolio-x7y9z-v1.1.0/translations.ts" src/utils/
+

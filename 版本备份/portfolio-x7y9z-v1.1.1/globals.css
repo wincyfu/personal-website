@@ -1,0 +1,410 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'OPPOSans';
+  src: url('/fonts/OPPOSans-R.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'OPPOSans';
+  src: url('/fonts/OPPOSans-B.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Cervanttis';
+  src: url('/fonts/Cervanttis.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --foreground-rgb: 255, 255, 255;
+  --background-rgb: 29, 29, 32;
+  --transition-duration: 300ms;
+  --primary-color: #29654d;
+  --secondary-color: #41ffb3;
+  --tag-background: #273C36;
+}
+
+/* 浅色主题变量 */
+body.light-theme {
+  --foreground-rgb: 0, 0, 0;
+  --background-rgb: 255, 255, 255;
+  --tag-background: #f0f9f6;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-rgb));
+  font-family: 'PingFang SC', sans-serif;
+  transition: background var(--transition-duration), color var(--transition-duration);
+}
+
+@layer components {
+  .container-safe {
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  @media (min-width: 640px) {
+    .container-safe {
+      max-width: 640px;
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .container-safe {
+      max-width: 768px;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .container-safe {
+      max-width: 1024px;
+    }
+  }
+  
+  @media (min-width: 1280px) {
+    .container-safe {
+      max-width: 1280px;
+    }
+  }
+  
+  @media (min-width: 1440px) {
+    .container-safe {
+      max-width: 1440px;
+    }
+  }
+  
+  @media (min-width: 1920px) {
+    .container-safe {
+      max-width: 1920px;
+      padding-left: 270px;
+      padding-right: 270px;
+    }
+  }
+  
+  .gradient-green {
+    background: linear-gradient(180deg, rgba(var(--primary-color-rgb, 41, 101, 77), 0.15) 0%, rgba(var(--secondary-color-rgb, 65, 255, 179), 0.27) 100%);
+  }
+  
+  .gradient-green-2 {
+    background: linear-gradient(180deg, rgba(var(--primary-color-rgb, 41, 101, 77), 0.15) 0%, rgba(30, 255, 165, 0.95) 100%);
+  }
+  
+  .nav-link {
+    @apply text-base font-normal text-white hover:text-secondary transition-colors;
+  }
+  
+  .tag-bubble {
+    background-color: var(--tag-background);
+    @apply text-white rounded-full px-4 py-2 shadow-md;
+  }
+  
+  .animate-hello {
+    animation: fadeIn 1.2s ease forwards;
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+    will-change: opacity, transform;
+  }
+  
+  .animate-fadeIn {
+    animation: fadeIn 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    will-change: opacity, transform;
+  }
+  
+  .animate-slideInFromLeft {
+    animation: slideInFromLeft 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    will-change: opacity, transform;
+  }
+  
+  .animate-slideInFromRight {
+    animation: slideInFromRight 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    will-change: opacity, transform;
+  }
+  
+  .animate-pulse-slow {
+    animation: pulseSlow 4s ease-in-out infinite;
+    will-change: opacity, transform;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes slideInFromLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes slideInFromRight {
+    from {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes pulseSlow {
+    0% {
+      opacity: 0.8;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.05);
+    }
+    100% {
+      opacity: 0.8;
+      transform: scale(1);
+    }
+  }
+
+  .header-image-hover {
+    transition: transform 0.5s ease;
+    will-change: transform;
+  }
+
+  .header-image-hover:hover {
+    transform: scale(1.03);
+  }
+}
+
+@keyframes waving-hand {
+  0% { transform: rotate(0deg); }
+  10% { transform: rotate(14deg); }
+  20% { transform: rotate(-8deg); }
+  30% { transform: rotate(14deg); }
+  40% { transform: rotate(-4deg); }
+  50% { transform: rotate(10deg); }
+  60% { transform: rotate(0deg); }
+  100% { transform: rotate(0deg); }
+}
+
+.waving-hand {
+  display: inline-block;
+  animation: waving-hand 2.5s infinite;
+  transform-origin: 70% 70%;
+  will-change: transform;
+}
+
+/* 隐藏滚动条样式 */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* 移动端设计卡片容器样式 */
+.mobile-design-container {
+  width: 100%;
+  position: relative;
+}
+
+/* 移动端设计全宽容器 */
+.mobile-design-wrapper {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+}
+
+/* 移动端设计滚动容器 - Webflow风格 */
+.mobile-design-scroll {
+  display: flex;
+  overflow-x: auto;
+  padding-bottom: 2rem;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  padding-right: 0; /* 去掉右侧宽度限制，让所有卡片都能显示 */
+  gap: 10px; /* 卡片之间的间距 */
+}
+
+/* 移动端设计标题样式 */
+.mobile-design-title {
+  position: relative;
+  z-index: 5;
+  padding-left: 0; /* 确保标题没有额外的左内边距 */
+}
+
+/* 媒体查询适配 */
+@media (max-width: 768px) {
+  .mobile-card {
+    width: 90% !important;
+  }
+  
+  .mobile-design-scroll {
+    padding-right: 0; /* 移动设备上也去掉右侧宽度限制 */
+    gap: 10px; /* 保持统一的10px间距 */
+  }
+}
+
+/* Webflow风格卡片样式 */
+.mobile-card {
+  flex: 0 0 auto;
+  width: 380px !important;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  overflow: hidden;
+  transform-origin: center center;
+  opacity: 0.4;
+  transform: scale(0.94);
+}
+
+/* 卡片内容 */
+.mobile-card-content {
+  height: 100%;
+  overflow: hidden;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+/* 优化SpotlightCard在卡片中的样式 */
+.mobile-card .card-spotlight {
+  height: 100%;
+  padding: 0;
+  border: 1px solid;
+}
+
+/* 深色主题下的SpotlightCard样式 */
+body:not(.light-theme) .mobile-card .card-spotlight {
+  background-color: #171717 !important;
+  border-color: #222222 !important;
+  color: #fff !important;
+}
+
+/* 浅色主题下的SpotlightCard样式 */
+body.light-theme .mobile-card .card-spotlight {
+  background-color: #ffffff !important;
+  border-color: #e5e7eb !important;
+  color: #222 !important;
+}
+
+/* 可见卡片 */
+.mobile-card-visible {
+  opacity: 1 !important;
+  transform: scale(1) !important;
+  z-index: 2;
+  position: relative;
+}
+
+/* 暗淡卡片 */
+.mobile-card-dim {
+  opacity: 0.4;
+  transform: scale(0.94);
+  z-index: 1;
+}
+
+/* 第一个卡片 */
+.mobile-card-first {
+  margin-left: 0 !important;
+  z-index: 3;
+}
+
+/* 控制按钮样式 */
+.slider-control-button {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #333;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, opacity 0.3s ease;
+  /* 增加点击区域，提高按钮可用性 */
+  touch-action: manipulation;
+  z-index: 10;
+}
+
+.slider-control-button:hover {
+  background-color: #444;
+}
+
+.slider-control-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 卡片悬停效果 */
+.mobile-card:hover .mobile-card-content {
+  transform: translateY(-8px);
+}
+
+/* 深色模式下的卡片悬停阴影 */
+body:not(.light-theme) .mobile-card:hover .mobile-card-content {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* SpotlightCard悬停效果 */
+.mobile-card:hover .card-spotlight {
+  transform: translateY(-8px);
+}
+
+/* 深色模式下的SpotlightCard悬停阴影 */
+body:not(.light-theme) .mobile-card:hover .card-spotlight {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* 卡片图片 */
+.mobile-card-image {
+  transition: transform 0.6s ease;
+}
+
+/* 适配平板设备的样式 */
+@media (min-width: 769px) and (max-width: 1023px) {
+  .mobile-card {
+    width: 380px !important;
+  }
+}
+
+/* 确保卡片与标题对齐 */
+.align-with-title {
+  position: relative;
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+}
+
+/* 深色模式下的SpotlightCard悬停阴影 */
+body:not(.light-theme) .mobile-card:hover .card-spotlight {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.mobile-card:hover .mobile-card-image {
+  transform: scale(1.05);
+} 
