@@ -7,12 +7,13 @@ const nextConfig = {
   },
   // 生产环境启用严格模式
   reactStrictMode: true,
-  // 为Vercel启用输出文件跟踪
-  experimental: {
-    outputFileTracingRoot: undefined,
-  },
+  // 完全禁用输出文件跟踪
+  outputFileTracing: false,
   // 优化webpack配置
   webpack: (config, { dev, isServer }) => {
+    // 禁用缓存
+    config.cache = false;
+    
     // 排除版本备份文件夹
     config.module.rules.push({
       test: /\.tsx?$/,
