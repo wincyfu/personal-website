@@ -181,7 +181,7 @@ export default function About() {
             
             <p 
               ref={elementsRef.contactText}
-              className={`${contentVisible ? 'opacity-100' : 'opacity-0'} text-lg mt-16 mb-26 p-4 border-l-4 border-primary bg-primary/15 rounded transition-opacity duration-500`}
+              className={`${contentVisible ? 'opacity-100' : 'opacity-0'} text-sm mt-16 mb-26 p-4 border-l-4 border-primary bg-primary/15 rounded transition-opacity duration-500`}
             >
               {isEnglish 
                 ? "Whether you're curious about AI, passionate about design, or looking for a collaboration partner, feel free to reach out anytime. Maybe we can create something amazing together!"
