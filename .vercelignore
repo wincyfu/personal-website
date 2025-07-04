@@ -1,6 +1,43 @@
 # 版本备份文件夹
 版本备份/
-版本备份/**
+versions/
+固定文件/
+fixed_files/
+temp_fix/
+temp_convert/
+
+# Git 源码
+git-2.30.0/
+
+# 开发工具和缓存
+.next/
+node_modules/
+.git/
+.DS_Store
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 备份文件
+*.backup
+*.bak
+*.tmp
+
+# 测试文件
+*.test.*
+*test*
+
+# 脚本文件
+scripts/
+
+# SSH 密钥
+*.pub
+ssh-keygen*
+
+# 其他临时文件
+_next/
+.vercel/
 
 # 个人网站备份
 personal-website/
@@ -14,31 +51,14 @@ backups*/
 
 # 临时文件
 temp_*/
-fixed_files/
-temp_fix/
-versions/
-
-# Git相关
-.git/
-.gitignore
-
-# Node modules
-node_modules/
-
-# 构建输出
-.next/
-out/
-build/
 
 # 日志文件
-*.log
 logs/
 
 # 环境文件
 .env*
 
 # 系统文件
-.DS_Store
 Thumbs.db
 
 # 忽略大文件

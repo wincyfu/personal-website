@@ -1,23 +1,38 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // 完全禁用图片优化，使用原始静态图片
+  // 为Vercel部署优化图片配置
   images: {
-    unoptimized: true
+    unoptimized: true,
+    domains: ['wincyfu.vercel.app'],
   },
-  // 关闭严格模式，避免开发环境中的双重渲染
-  reactStrictMode: false,
-  // 禁用构建跟踪，避免递归问题
-  outputFileTracing: false,
-  // 禁用 webpack 缓存，解决路径问题
-  webpack: (config) => {
-    config.cache = false;
+  // 生产环境启用严格模式
+  reactStrictMode: true,
+  // 为Vercel启用输出文件跟踪
+  experimental: {
+    outputFileTracingRoot: undefined,
+  },
+  // 优化webpack配置
+  webpack: (config, { dev, isServer }) => {
     // 排除版本备份文件夹
     config.module.rules.push({
       test: /\.tsx?$/,
       exclude: /版本备份/,
     });
+    
+    // 生产环境优化
+    if (!dev && !isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+      };
+    }
+    
     return config;
   },
+  // 压缩和优化
+  compress: true,
+  // 启用静态导出优化
+  trailingSlash: false,
 };
 
 module.exports = nextConfig; 
