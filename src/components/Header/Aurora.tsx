@@ -127,9 +127,9 @@ void main() {
 function Aurora(props: AuroraProps) {
   const {
     colorStops = ["#3A29FF", "#FF94B4", "#FF3232"],
-    amplitude = 0.8, // 降低默认振幅
+    amplitude = 0.8,
     blend = 0.5,
-    speed = 0.75 // 稍微降低速度
+    speed = 0.75
   } = props;
   const propsRef = useRef<AuroraProps>(props);
   propsRef.current = props;
@@ -141,8 +141,9 @@ function Aurora(props: AuroraProps) {
   const animationFrameRef = useRef<number | null>(null);
   const colorInstanceRef = useRef<any>(null);
   const lastTimeRef = useRef<number>(0);
-  const frameIntervalRef = useRef<number>(1000 / 60); // 限制为60fps
+  const frameIntervalRef = useRef<number>(1000 / 60);
   const isInitializedRef = useRef<boolean>(false);
+  const isDestroyedRef = useRef<boolean>(false);
 
   // 客户端组件使用useEffect创建WebGL渲染流程
   useEffect(() => {
@@ -150,6 +151,7 @@ function Aurora(props: AuroraProps) {
     if (typeof window === 'undefined') return;
     if (isInitializedRef.current) return;
     isInitializedRef.current = true;
+    isDestroyedRef.current = false;
 
     const ctn = ctnDom.current;
     if (!ctn) return;
@@ -157,10 +159,11 @@ function Aurora(props: AuroraProps) {
     // 异步加载OGL库
     const setupWebGL = async () => {
       try {
-        // 直接导入OGL，不使用dynamic
         const OGL = await import('ogl');
         const { Renderer, Program, Mesh, Color, Triangle } = OGL;
         
+        if (isDestroyedRef.current) return;
+
         // 保存Color类的引用
         colorInstanceRef.current = Color;
   
@@ -169,7 +172,8 @@ function Aurora(props: AuroraProps) {
           alpha: true,
           premultipliedAlpha: true,
           antialias: true,
-          powerPreference: 'high-performance' // 请求高性能GPU模式
+          powerPreference: 'high-performance',
+          preserveDrawingBuffer: true
         });
         rendererRef.current = renderer;
         
@@ -178,6 +182,7 @@ function Aurora(props: AuroraProps) {
         gl.enable(gl.BLEND);
         gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
         gl.canvas.style.backgroundColor = 'transparent';
+        gl.canvas.style.mixBlendMode = 'normal';
   
         // 创建几何体和着色器程序
         const geometry = new Triangle(gl);
@@ -199,7 +204,8 @@ function Aurora(props: AuroraProps) {
             uColorStops: { value: colorStopsArray },
             uResolution: { value: [ctn.offsetWidth, ctn.offsetHeight] },
             uBlend: { value: blend }
-          }
+          },
+          transparent: true
         });
         programRef.current = program;
   
@@ -214,7 +220,9 @@ function Aurora(props: AuroraProps) {
         resize();
   
         // 开始渲染循环
-        update(0);
+        if (!isDestroyedRef.current) {
+          update(0);
+        }
       } catch (error) {
         console.error("Error loading OGL:", error);
       }
@@ -222,7 +230,7 @@ function Aurora(props: AuroraProps) {
 
     // 处理窗口大小变化
     function resize() {
-      if (!ctn || !rendererRef.current || !programRef.current) return;
+      if (!ctn || !rendererRef.current || !programRef.current || isDestroyedRef.current) return;
       
       const width = ctn.offsetWidth;
       const height = ctn.offsetHeight;
@@ -237,13 +245,14 @@ function Aurora(props: AuroraProps) {
     // 使用防抖函数处理resize事件
     let resizeTimeout: ReturnType<typeof setTimeout>;
     const debouncedResize = () => {
+      if (isDestroyedRef.current) return;
       clearTimeout(resizeTimeout);
       resizeTimeout = setTimeout(resize, 100);
     };
 
     // 更新函数
     const update = (timestamp: number) => {
-      if (!rendererRef.current || !programRef.current || !meshRef.current || !colorInstanceRef.current) return;
+      if (isDestroyedRef.current || !rendererRef.current || !programRef.current || !meshRef.current || !colorInstanceRef.current) return;
       
       animationFrameRef.current = requestAnimationFrame(update);
       
@@ -276,32 +285,17 @@ function Aurora(props: AuroraProps) {
       rendererRef.current.render({ scene: meshRef.current });
     };
 
-    // 使用Intersection Observer优化不可见时的性能
-    let isVisible = true;
-    const observer = new IntersectionObserver((entries) => {
-      isVisible = entries[0].isIntersecting;
-      if (isVisible && !animationFrameRef.current) {
-        animationFrameRef.current = requestAnimationFrame(update);
-      } else if (!isVisible && animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-        animationFrameRef.current = null;
-      }
-    }, { threshold: 0.1 });
-    
-    if (ctn) {
-      observer.observe(ctn);
-    }
-
     // 开始设置
     window.addEventListener("resize", debouncedResize);
     setupWebGL();
 
     // 清理函数
     return () => {
-      observer.disconnect();
+      isDestroyedRef.current = true;
       
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
+        animationFrameRef.current = null;
       }
       
       window.removeEventListener("resize", debouncedResize);
@@ -320,6 +314,7 @@ function Aurora(props: AuroraProps) {
       programRef.current = null;
       meshRef.current = null;
       colorInstanceRef.current = null;
+      isInitializedRef.current = false;
     };
   }, [amplitude, colorStops, blend, speed]);
 

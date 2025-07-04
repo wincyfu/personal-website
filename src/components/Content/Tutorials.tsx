@@ -47,8 +47,11 @@ const LocalTutorialCard = ({ article }: LocalTutorialCardProps) => {
   
   return (
     <StarBorder 
-      as="div" 
-      className="w-full h-full"
+      as="a" 
+      href={article.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="w-full h-full block"
       color={isDarkTheme ? "rgba(41, 255, 153, 0.5)" : "rgba(38, 191, 115, 0.5)"}
       speed="6s"
     >
@@ -88,10 +91,7 @@ const LocalTutorialCard = ({ article }: LocalTutorialCardProps) => {
             {article.excerpt}
           </p>
           <div className="mt-auto">
-            <a 
-              href={article.url} 
-              target="_blank" 
-              rel="noopener noreferrer"
+            <span 
               className={`inline-block px-4 py-2 rounded-full text-sm font-medium transition-all ${
                 isDarkTheme 
                   ? 'bg-primary/10 text-primary hover:bg-primary/20' 
@@ -99,7 +99,7 @@ const LocalTutorialCard = ({ article }: LocalTutorialCardProps) => {
               }`}
             >
               {isEnglish ? 'View Details' : '查看详情'}
-            </a>
+            </span>
           </div>
         </div>
       </div>

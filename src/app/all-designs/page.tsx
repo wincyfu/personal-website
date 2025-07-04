@@ -78,6 +78,11 @@ export default function AllDesignsPage() {
     setSelectedProject(null);
   };
 
+  // 处理项目切换
+  const handleProjectChange = (newProject: any) => {
+    setSelectedProject(newProject);
+  };
+
   // 根据项目ID获取专属标签
   const getProjectTags = (projectId: string) => {
     switch (projectId) {
@@ -333,6 +338,7 @@ export default function AllDesignsPage() {
           isOpen={showModal}
           onClose={handleCloseModal}
           currentProjectId={selectedProject.id}
+          onProjectChange={handleProjectChange}
         />
       )}
 
