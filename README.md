@@ -68,12 +68,17 @@
 
 当前版本: v1.6.0
 
-### v1.6.0 (2025-07-05)
+### v1.6.0 (2025-07-09)
 - **优化首页Aurora效果**：
   - 改进WebGL渲染器配置，添加preserveDrawingBuffer和transparent选项
   - 优化组件生命周期管理，确保效果稳定显示
   - 改进3D渲染相关属性和GPU加速支持
   - 修复鼠标悬停在"联系我"按钮时Aurora效果消失的问题
+- **修复首页HELLO文字交互效果**：
+  - 修复TextPressure组件中阻止字体变化动画的CSS样式问题
+  - 移除`transform: none !important;`和`transition: none;`限制
+  - 添加平滑的字体变化过渡效果：`transition: font-variation-settings 0.1s ease-out;`
+  - 恢复"HELLO!"文字随鼠标移动呈现粗细变化的交互效果
 - **改进文章教程模块交互**：
   - 优化文章卡片的点击体验，使整个卡片区域可点击
   - 将"查看详情"按钮改为视觉提示，保持原有样式

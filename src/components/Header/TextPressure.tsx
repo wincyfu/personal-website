@@ -60,8 +60,7 @@ const StyleSheet = ({ fontFamily, fontUrl, textColor, strokeColor }:
     }
     
     .text-pressure-title span {
-      transform: none !important;
-      transition: none;
+      transition: font-variation-settings 0.1s ease-out;
     }
   ` }} />
 );
@@ -258,8 +257,7 @@ const TextPressure: React.FC<TextPressureProps> = ({
               data-char={char}
               style={{
                 display: 'inline-block',
-                color: stroke ? undefined : textColor,
-                transform: 'none'
+                color: stroke ? undefined : textColor
               }}
             >
               {char}
@@ -315,8 +313,7 @@ const TextPressure: React.FC<TextPressureProps> = ({
             data-char={char}
             style={{
               display: 'inline-block',
-              color: stroke ? undefined : textColor,
-              transform: 'none'
+              color: stroke ? undefined : textColor
             }}
           >
             {char}
